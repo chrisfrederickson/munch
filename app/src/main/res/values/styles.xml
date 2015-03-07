@@ -1,0 +1,20 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
+    <style name="AppTheme" parent="MaterialDrawerTheme.Light.DarkToolbar.TranslucentStatus">
+        <!-- Customize your theme here. -->
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textColorSecondary">@color/secondary_text</item>
+    </style>
+    <style name="AppThemeToolbar" parent="MaterialDrawerTheme.Light.DarkToolbar.TranslucentStatus">
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textColorSecondary">@color/secondary_text</item>
+    </style>
+    <style name="MyActionBar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@color/orange_500</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark</item>
+    </style>
+</resources>

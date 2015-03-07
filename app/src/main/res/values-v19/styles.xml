@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppThemeToolbar" parent="MaterialDrawerTheme.Light.DarkToolbar.TranslucentStatus">
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textColorSecondary">@color/secondary_text</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+</resources>
