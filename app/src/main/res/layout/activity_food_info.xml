@@ -12,6 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/ic_launcher"
+            android:id="@+id/hero"
             android:scaleType="centerCrop"
             />
         <LinearLayout
@@ -83,7 +84,7 @@
             android:id="@+id/nutrition"
             android:layout_width="240dp"
             android:layout_height="match_parent">
-            <TableRow>
+            <TableRow android:paddingBottom="8dp">
                 <TextView android:layout_height="match_parent"
                     android:layout_width="150dp"
                     android:fontFamily="sans-serif-condensed"
@@ -91,10 +92,67 @@
                     android:text="Calories"/>
                 <TextView android:layout_height="match_parent"
                     android:layout_width="90dp"
+                    android:id="@+id/food_calories"
                     android:fontFamily="sans-serif-condensed"
                     android:textSize="14sp"
                     android:layout_gravity="end"
                     android:text="150"/>
+            </TableRow>
+            <TableRow android:paddingBottom="8dp">
+                <TextView android:layout_height="match_parent"
+                    android:layout_width="150dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="14sp"
+                    android:text="Total Fat"/>
+                <TextView android:layout_height="match_parent"
+                    android:layout_width="90dp"
+                    android:id="@+id/food_fat"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="14sp"
+                    android:layout_gravity="end"
+                    android:text="10g"/>
+            </TableRow>
+            <TableRow android:paddingBottom="8dp">
+                <TextView android:layout_height="match_parent"
+                    android:layout_width="150dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="14sp"
+                    android:text="Protein"/>
+                <TextView android:layout_height="match_parent"
+                    android:layout_width="90dp"
+                    android:id="@+id/food_protein"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="14sp"
+                    android:layout_gravity="end"
+                    android:text="10g"/>
+            </TableRow>
+            <TableRow android:paddingBottom="8dp">
+                <TextView android:layout_height="match_parent"
+                    android:layout_width="150dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="14sp"
+                    android:text="Total Carbohydrates"/>
+                <TextView android:layout_height="match_parent"
+                    android:layout_width="90dp"
+                    android:id="@+id/food_carbs"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="14sp"
+                    android:layout_gravity="end"
+                    android:text="10g"/>
+            </TableRow>
+            <TableRow android:paddingBottom="8dp">
+                <TextView android:layout_height="match_parent"
+                    android:layout_width="150dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="14sp"
+                    android:text="Sodium"/>
+                <TextView android:layout_height="match_parent"
+                    android:layout_width="90dp"
+                    android:id="@+id/food_sodium"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="14sp"
+                    android:layout_gravity="end"
+                    android:text="10mg"/>
             </TableRow>
         </TableLayout>
     </LinearLayout>

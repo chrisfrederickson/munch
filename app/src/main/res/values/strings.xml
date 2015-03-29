@@ -5,5 +5,50 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_food_info">FoodInfo</string>
+    <string name="title_activity_photography">Photography</string>
 
+    <!-- SETTINGS -->
+    <string name="about">About</string>
+    <string name="notifications">Notifications</string>
+    <string name="sm_notifications">NOTIFICATIONS</string>
+    <string name="dietary_restrictions">Dietary Restrictions</string>
+    <string name="nuts">Nut Allergy</string>
+    <string name="sm_nuts">NUT_ALLERGY</string>
+    <string name="dairy">Lactose Intolerant</string>
+    <string name="sm_dairy">LACTOSE_INTOLERANT</string>
+    <string name="vegetarian">Vegetarian</string>
+    <string name="sm_vege">VEGETARIAN</string>
+    <string name="vegan">Vegan</string>
+    <string name="sm_vegn">VEGAN</string>
+    <string name="kosher">Kosher</string>
+    <string name="sm_kosher">KOSHER</string>
+    <string name="gluten">Gluten Free</string>
+    <string name="sm_gluten">GLTN</string>
+    <string name="physical_activity">Daily Activity</string>
+    <string name="inactive">Fairly Inactive</string>
+    <string name="active">Active</string>
+    <string name="vigorous">Vigorous</string>
+
+    <string-array name="fitness_levels">
+        <item>@string/inactive</item>
+        <item>@string/active</item>
+        <item>@string/vigorous</item>
+    </string-array>
+    <string-array name="sm_fitness_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="sm_fitness">Active</string>
+    <string name="app_version">APP_VERSION</string>
+    <string name="version">Version</string>
+    <string name="developers">DEVELOPERS</string>
+    <string name="created_by">Created By</string>
+    <string name="persons">Christopher Frederickson and Nick Felker</string>
+    <string name="title_activity_food_entry">FoodEntry</string>
+
+    <!-- INTENT PARAMETERS -->
+    <string name="intent_food_name">FOOD_NAME</string>
+    <string name="intent_food_photo">FOOD_PHOTO</string>
 </resources>

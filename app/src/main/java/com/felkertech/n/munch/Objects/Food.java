@@ -30,4 +30,8 @@ public class Food {
     public String getHint() {
         return hint;
     }
+
+    public String toString() {
+        return getName();
+    }
 }

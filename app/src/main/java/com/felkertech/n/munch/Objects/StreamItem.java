@@ -38,4 +38,8 @@ public class StreamItem {
     public int getRelevantImage() {
         return relevantImage;
     }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

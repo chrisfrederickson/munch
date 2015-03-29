@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary">@color/green_500</color>
+    <color name="primary_dark">@color/green_500</color>
     <color name="primary_pressed">@color/green_900</color>
     <color name="ripple">#0f9</color>
     <color name="accent">@color/orange_500</color>
@@ -9,6 +10,10 @@
     <color name="blue_012">#09f</color>
     <color name="dark_blue_012">#06c</color>
     <color name="green_012">#0f9</color>
+
+    <color name="nutrition_good">@color/green_500</color>
+    <color name="nutrition_okay">@color/orange_500</color>
+    <color name="nutrition_bad">@color/purple_500</color>
 
     <!-- MAT COLORS -->
     <color name="red_500">#F44336</color>

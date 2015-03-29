@@ -40,7 +40,7 @@ public class HistoryAdapter extends RecyclerView.Adapter {
         public int type;
         public ViewHolder(View v, int t) {
             super(v);
-            Log.d(TAG, "creating viewholder");
+//            Log.d(TAG, "creating viewholder");
             mView = v;
             type = t;
         }
@@ -50,15 +50,15 @@ public class HistoryAdapter extends RecyclerView.Adapter {
     public HistoryAdapter(ArrayList<StreamItem> myDataset, Context context) {
         mDataset = myDataset;
         mContext = context;
-        Log.d(TAG, "Initiated the historyadapter with "+myDataset.size()+" items");
-        Log.d(TAG, myDataset.get(0).getTitle());
+//        Log.d(TAG, "Initiated the historyadapter with "+myDataset.size()+" items");
+//        Log.d(TAG, myDataset.get(0).getTitle());
     }
 
     // Create new views (invoked by the layout manager)
     @Override
     public HistoryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {
-        Log.d(TAG, "Creating viewholder");
+//        Log.d(TAG, "Creating viewholder");
         int layoutId;
         switch(viewType) {
             case StreamTypes.TYPE_ADVICE:
@@ -67,24 +67,27 @@ public class HistoryAdapter extends RecyclerView.Adapter {
             case StreamTypes.TYPE_ITEM:
                 layoutId = R.layout.history_item;
                 break;
+            case StreamTypes.TYPE_DAY:
+                layoutId = R.layout.history_date;
+                break;
             default:
                 layoutId = R.layout.history_item;
                 break;
         }
-        Log.d(TAG, "Choosing layout "+layoutId+" from "+viewType);
+//        Log.d(TAG, "Choosing layout "+layoutId+" from "+viewType);
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(layoutId, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v, viewType);
-        Log.d(TAG, "Adding view and posting");
+//        Log.d(TAG, "Adding view and posting");
         return vh;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        Log.d(TAG, mDataset.get(position).getItemClass()+" type is being drawn at pos "+position);
+//        Log.d(TAG, mDataset.get(position).getItemClass()+" type is being drawn at pos "+position);
         switch(mDataset.get(position).getItemClass()) {
             case StreamTypes.TYPE_ADVICE:
                 ((ImageView) holder.itemView.findViewById(R.id.hero)).setImageResource(mDataset.get(position).getRelevantImage());
@@ -120,7 +123,10 @@ public class HistoryAdapter extends RecyclerView.Adapter {
                     }
                 });
                 break;
-            default:
+            case StreamTypes.TYPE_DAY:
+                ((TextView) holder.itemView.findViewById(R.id.date)).setText(mDataset.get(position).getTitle());
+                break;
+            default: //TYPE_FOOD
                 ((TextView) holder.itemView.findViewById(R.id.title)).setText(mDataset.get(position).getTitle());
                 ((TextView) holder.itemView.findViewById(R.id.secondaryTitle)).setText(mDataset.get(position).getSecondaryTitle());
                 ((TextView) holder.itemView.findViewById(R.id.tertiaryTitle)).setText(mDataset.get(position).getTertiaryTitle());
@@ -130,6 +136,13 @@ public class HistoryAdapter extends RecyclerView.Adapter {
                         //Open up data activity
                         Intent i = new Intent(mContext, FoodInfo.class);
                         i.putExtra("FOOD_NAME", ((TextView) holder.itemView.findViewById(R.id.title)).getText());
+                        i.putExtra("FOOD_CALORIES", ((HistoryItem)mDataset.get(position)).getEntry().getCalories());
+                        i.putExtra("FOOD_CARBS", ((HistoryItem)mDataset.get(position)).getEntry().getCarbs());
+                        i.putExtra("FOOD_FAT", ((HistoryItem)mDataset.get(position)).getEntry().getFat());
+                        i.putExtra("FOOD_PROTEIN", ((HistoryItem)mDataset.get(position)).getEntry().getProtein());
+                        i.putExtra("FOOD_SODIUM", ((HistoryItem)mDataset.get(position)).getEntry().getSodium());
+                        i.putExtra("FOOD_URI", ((HistoryItem)mDataset.get(position)).getEntry().getURI().toString());
+                        i.putExtra("FOOD_DESCRIPTION", ((HistoryItem) mDataset.get(position)).getEntry().getSubtitle());
                         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { //Smexy activity transition
                             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext,
                                     Pair.create(holder.itemView.findViewById(R.id.food_icon), "food_icon"),
@@ -140,13 +153,13 @@ public class HistoryAdapter extends RecyclerView.Adapter {
                         }
                     }
                 });
-                Log.d(TAG, "There are "+((HistoryItem) mDataset.get(position)).getCalories()+" calories");
-                if(((HistoryItem) mDataset.get(position)).getCalories() < 300)
-                    ((TextView) holder.itemView.findViewById(R.id.tertiaryTitle)).setTextColor(color(R.color.green_500));
-                else if(((HistoryItem) mDataset.get(position)).getCalories() < 750)
-                    ((TextView) holder.itemView.findViewById(R.id.tertiaryTitle)).setTextColor(color(R.color.orange_500));
+//                Log.d(TAG, "There are "+((HistoryItem) mDataset.get(position)).getCalories()+" calories");
+                if(((HistoryItem) mDataset.get(position)).getCalories() < 200)
+                    ((TextView) holder.itemView.findViewById(R.id.tertiaryTitle)).setTextColor(color(R.color.nutrition_good));
+                else if(((HistoryItem) mDataset.get(position)).getCalories() < 400)
+                    ((TextView) holder.itemView.findViewById(R.id.tertiaryTitle)).setTextColor(color(R.color.nutrition_okay));
                 else
-                    ((TextView) holder.itemView.findViewById(R.id.tertiaryTitle)).setTextColor(color(R.color.red_500));
+                    ((TextView) holder.itemView.findViewById(R.id.tertiaryTitle)).setTextColor(color(R.color.nutrition_bad));
 
                 ((ImageView) holder.itemView.findViewById(R.id.food_icon)).setImageResource(mDataset.get(position).getRelevantImage());
                 break;
