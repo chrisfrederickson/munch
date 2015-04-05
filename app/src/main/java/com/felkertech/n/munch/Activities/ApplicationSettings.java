@@ -42,7 +42,7 @@ public class ApplicationSettings extends PreferenceActivity {
      * shown on tablets.
      */
     private static final boolean ALWAYS_SIMPLE_PREFS = true;
-    public static final String TAG = "munch::ApplicationSettings";
+    public static final String TAG = "munch::ApplictnSettings";
 //    private static SharedPreferences sharedPreferences;
 
 

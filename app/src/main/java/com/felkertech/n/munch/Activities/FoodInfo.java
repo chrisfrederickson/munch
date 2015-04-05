@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.felkertech.n.munch.R;
+import com.koushikdutta.ion.Ion;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -46,6 +47,17 @@ public class FoodInfo extends ActionBarActivity {
                 ((TextView) findViewById(R.id.title)).setText(mFood);
             } else if(i.hasExtra("FOOD_TYPE")) { //For things like 'Green Vegetables'
                 mFood = i.getStringExtra("FOOD_TYPE");
+                if(mFood.equals("Salt Deposits")) {
+                    photoUri = "http://i0.kym-cdn.com/entries/icons/original/000/017/028/goaty1.PNG";
+                    Ion.with((ImageView) findViewById(R.id.hero))
+                            .load(photoUri);
+                    findViewById(R.id.nutrition).setVisibility(View.GONE);
+                    ((TextView) findViewById(R.id.descriptor)).setText("'Alpine Ibexes climb nearly 90 degree angles to lick salt deposits of of mountainsides. " +
+                            "They crave that mineral.' (Source)\n#world");
+                } else {
+                    //TODO Lookup food via string
+                }
+
                 ((TextView) findViewById(R.id.title)).setText(mFood);
                 findViewById(R.id.descriptor).setBackgroundColor(getResources().getColor(android.R.color.white));
                 findViewById(R.id.nutrition).setVisibility(View.GONE);

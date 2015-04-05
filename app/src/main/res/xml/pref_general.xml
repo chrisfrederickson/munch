@@ -46,5 +46,17 @@
             android:title="@string/created_by"
             android:selectable="false"
             android:summary="@string/persons"/>
+        <!--<div>Icons made by <a href="http://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>-->
+        <Preference android:key="FoodIcons"
+            android:title="Iconography"
+            android:selectable="false"
+            android:summary="Food icons made by Freepik www.flaticon.com; is licensed by CC BY 3.0"/>
+        <Preference android:key="Photo"
+            android:title="Photography"
+            android:selectable="false"
+            android:summary="Some photos taken from Wikimedia;\n
+            \n'Steinbock1000943' by Gunnar Ries - Own work (own photo). Licensed under CC BY-SA 2.5 via Wikimedia Commons - http://commons.wikimedia.org/wiki/File:Steinbock1000943.JPG#/media/File:Steinbock1000943.JPG
+            \n'Supreme pizza' by Scott Bauer - http://www.ars.usda.gov/is/graphics/photos/mar01/k7633-3.htm. Licensed under Public Domain via Wikimedia Commons - http://commons.wikimedia.org/wiki/File:Supreme_pizza.jpg#/media/File:Supreme_pizza.jpg
+            "/>
     </PreferenceCategory>
 </PreferenceScreen>

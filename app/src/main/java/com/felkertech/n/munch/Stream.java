@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.UserManager;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import com.felkertech.n.munch.Objects.AdviceCard;
 import com.felkertech.n.munch.Objects.DateItem;
 import com.felkertech.n.munch.Objects.HistoryItem;
 import com.felkertech.n.munch.Objects.StreamItem;
+import com.felkertech.n.munch.Objects.StreamPhoto;
 import com.felkertech.n.munch.Photography.FroyoAlbumDirFactory;
 import com.felkertech.n.munch.Utils.AppManager;
 import com.felkertech.n.munch.database.FeedReaderDbHelper;
@@ -115,7 +117,7 @@ public class Stream extends ActionBarActivity {
     public void initDrawer() {
         AccountHeader.Result headerResult = new AccountHeader()
                 .withActivity(this)
-                .withHeaderBackground(R.drawable.ic_launcher)
+                .withHeaderBackground(R.drawable.banner_Supreme_pizza)
                 .addProfiles(
                         /*new ProfileDrawerItem().withName("Me").withEmail("").withIcon(getResources().getDrawable(R.drawable.ic_launcher))*/
                 )
@@ -132,12 +134,12 @@ public class Stream extends ActionBarActivity {
                 .withTranslucentStatusBar(true)
                 .withAccountHeader(headerResult)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName("History").withIcon(R.drawable.ic_launcher),
-                        new PrimaryDrawerItem().withName("Recommendations").withIcon(R.drawable.ic_launcher),
-                        new PrimaryDrawerItem().withName("Calendar Heat Map").withIcon(R.drawable.ic_launcher),
-                        new PrimaryDrawerItem().withName("Gallery").withIcon(R.drawable.ic_launcher),
+                        new PrimaryDrawerItem().withName("History").withIcon(R.drawable.ic_book_grey600_18dp),
+                        new PrimaryDrawerItem().withName("Recommendations").withIcon(R.drawable.ic_inbox_grey600_18dp),
+                        new PrimaryDrawerItem().withName("Calendar Heat Map").withIcon(R.drawable.ic_event_note_grey600_18dp),
+                        new PrimaryDrawerItem().withName("Gallery").withIcon(R.drawable.ic_image_grey600_18dp),
                         new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName("Settings").withIcon(R.drawable.ic_launcher)
+                        new SecondaryDrawerItem().withName("Settings").withIcon(R.drawable.ic_settings_grey600_18dp)
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -165,6 +167,7 @@ public class Stream extends ActionBarActivity {
                                 //Populate with photolayout
                                 //Do a refresh operation;
                                 Toast.makeText(getApplicationContext(), "Gallery", Toast.LENGTH_SHORT).show();
+                                refreshGallery();
                                 return;
                             case 6: //Settings
 //                                Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
@@ -261,17 +264,15 @@ public class Stream extends ActionBarActivity {
         Iterator<FoodTableEntry> i = entries.iterator();
         Date header = new Date();
         while(i.hasNext()) {
-            //TODO Look up nutritional data
             FoodTableEntry fte = i.next();
             Date test = new Date();
             test.setTime(fte.getTimestamp());
             Log.d(TAG, test.getDate()+" "+header.getDate());
             if(test.getDate() != header.getDate()) {
                 header = test;
-                //TODO FIXME L8r
                 items.add(new DateItem(test));
             }
-            items.add(new HistoryItem(fte.getFood(), fte.getSubtitle(), fte.getCalories(), gDrawId(fte.getFood()), fte));
+            items.add(new HistoryItem(fte.getFood(), fte.getSubtitle(), fte.getCalories(), getAppropriateIcon(fte.getFood()), fte));
         }
 
         /*items.add(new HistoryItem("Apple", "High in Fiber", 150, R.drawable.ic_launcher));
@@ -288,6 +289,9 @@ public class Stream extends ActionBarActivity {
         //Generate some cards, adapt based on time of day
         int hour = new Date().getHours();
         ArrayList<StreamItem> items = new ArrayList<StreamItem>();
+
+        if(AppManager.isUserAGoat(this))
+            items.add(new AdviceCard("Salt Deposits", "Do you have a craving for any minerals?", "", R.drawable.goat));
 
         //TODO FIGURE OUT WAYS TO GENERATE CONTENT
         if(hour > 5 && hour < 11) {
@@ -316,6 +320,26 @@ public class Stream extends ActionBarActivity {
                     R.drawable.ic_launcher));
         }
 
+        Log.d(TAG, "Passing "+items.size()+" items into Adapter");
+        //Now pass it
+        mAdapter = new HistoryAdapter(items, Stream.this);
+        mRecycler.setAdapter(mAdapter);
+    }
+    public void refreshGallery() {
+        mToolbar.setTitle("Gallery");
+        ArrayList<StreamItem> items = new ArrayList<StreamItem>();
+        FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getApplicationContext());
+        SQLiteDatabase rdb = mDbHelper.getReadableDatabase();
+        SQLiteDatabase wdb = mDbHelper.getWritableDatabase();
+        //FIXME Should not create database all the time as it resets
+        mDbHelper.onCreate(wdb);
+        ArrayList<FoodTableEntry> entries = mDbHelper.readAll(rdb);
+        Iterator<FoodTableEntry> i = entries.iterator();
+        Date header = new Date();
+        while(i.hasNext()) {
+            FoodTableEntry fte = i.next();
+            items.add(new StreamPhoto(fte));
+        }
         Log.d(TAG, "Passing "+items.size()+" items into Adapter");
         //Now pass it
         mAdapter = new HistoryAdapter(items, Stream.this);
@@ -436,5 +460,62 @@ public class Stream extends ActionBarActivity {
     }
     private String getAlbumName() {
         return "Munch";
+    }
+    private int getAppropriateIcon(String name) {
+        name = name.toLowerCase();
+        if(name.contains("pineapple"))
+            return R.drawable.pineapple;
+        if(name.contains("apple")) {
+            return R.drawable.apple55;
+        }
+        if(name.contains("turkey"))
+            return R.drawable.turkey7;
+        if(name.contains("tea"))
+            return R.drawable.tea24;
+        if(name.contains("cake") || name.contains("pie"))
+            return R.drawable.sweet9;
+        if(name.contains("sushi"))
+            return R.drawable.sushi3;
+        if(name.contains("beef") || name.contains("steak") || name.contains("lamb"))
+            return R.drawable.steak;
+        if(name.contains("coke") || name.contains("soda") || name.contains("coffee"))
+            return R.drawable.soda7;
+        if(name.contains("omlette") || name.contains("egg"))
+            return R.drawable.silhouette81;
+        if(name.contains("sandwich"))
+            return R.drawable.sandwich;
+        if(name.contains("pizza"))
+            return R.drawable.pizza3;
+        if(name.contains("lemon"))
+            return R.drawable.lemon10;
+        if(name.contains("dog"))
+            return R.drawable.hot33;
+        if(name.contains("carrot"))
+            return R.drawable.healthy_food5;
+        if(name.contains("banana"))
+            return R.drawable.healthy_food4;
+        if(name.contains("burger"))
+            return R.drawable.hamburger;
+        if(name.contains("grape"))
+            return R.drawable.grapes1;
+        if(name.contains("pear"))
+            return R.drawable.fruit51;
+        if(name.contains("orange"))
+            return R.drawable.fruit42;
+        if(name.contains("milk"))
+            return R.drawable.fresh7;
+        if(name.contains("fish"))
+            return R.drawable.fish52;
+        if(name.contains("vegetable") || name.contains("broccoli"))
+            return R.drawable.broccoli;
+        if(name.contains("bread"))
+            return R.drawable.bread14;
+        if(name.contains("drink") || name.contains("water"))
+            return R.drawable.drink81;
+        if(name.contains("beer"))
+            return R.drawable.drink24;
+        if(name.contains("ramen") || name.contains("rice") || name.contains("noodle"))
+            return R.drawable.chinese_food1;
+        return R.drawable.plants6;
     }
 }

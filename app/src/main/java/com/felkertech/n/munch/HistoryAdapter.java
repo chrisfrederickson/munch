@@ -13,13 +13,17 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.felkertech.n.munch.Activities.FoodInfo;
 import com.felkertech.n.munch.Objects.HistoryItem;
 import com.felkertech.n.munch.Objects.StreamItem;
+import com.felkertech.n.munch.Objects.StreamPhoto;
 import com.felkertech.n.munch.Utils.StreamTypes;
+import com.koushikdutta.ion.Ion;
 
 import java.util.ArrayList;
 
@@ -29,6 +33,7 @@ import java.util.ArrayList;
 public class HistoryAdapter extends RecyclerView.Adapter {
     private ArrayList<StreamItem> mDataset;
     private Context mContext;
+    private int lastPosition = -1;
     public static String TAG = "munch::HistoryAdapter";
 
     // Provide a reference to the views for each data item
@@ -70,6 +75,9 @@ public class HistoryAdapter extends RecyclerView.Adapter {
             case StreamTypes.TYPE_DAY:
                 layoutId = R.layout.history_date;
                 break;
+            case StreamTypes.TYPE_GALLERY:
+                layoutId = R.layout.stream_photo;
+                break;
             default:
                 layoutId = R.layout.history_item;
                 break;
@@ -88,6 +96,7 @@ public class HistoryAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 //        Log.d(TAG, mDataset.get(position).getItemClass()+" type is being drawn at pos "+position);
+        setAnimation(holder.itemView, position);
         switch(mDataset.get(position).getItemClass()) {
             case StreamTypes.TYPE_ADVICE:
                 ((ImageView) holder.itemView.findViewById(R.id.hero)).setImageResource(mDataset.get(position).getRelevantImage());
@@ -96,9 +105,20 @@ public class HistoryAdapter extends RecyclerView.Adapter {
                 holder.itemView.findViewById(R.id.button_dismiss).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        holder.itemView.setVisibility(View.GONE);
-                        mDataset.remove(position);
-                        notifyDataSetChanged();
+                        Animation animation = AnimationUtils.loadAnimation(mContext, android.R.anim.slide_in_left);
+                        holder.itemView.startAnimation(animation);
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            holder.itemView.postOnAnimation(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mDataset.remove(position);
+                                    notifyDataSetChanged();
+                                }
+                            });
+                        } else {
+                            mDataset.remove(position);
+                            notifyDataSetChanged();
+                        }
                     }
                 });
                 holder.itemView.findViewById(R.id.button_learn).setOnClickListener(new View.OnClickListener() {
@@ -126,7 +146,7 @@ public class HistoryAdapter extends RecyclerView.Adapter {
             case StreamTypes.TYPE_DAY:
                 ((TextView) holder.itemView.findViewById(R.id.date)).setText(mDataset.get(position).getTitle());
                 break;
-            default: //TYPE_FOOD
+            case StreamTypes.TYPE_ITEM: //Food item
                 ((TextView) holder.itemView.findViewById(R.id.title)).setText(mDataset.get(position).getTitle());
                 ((TextView) holder.itemView.findViewById(R.id.secondaryTitle)).setText(mDataset.get(position).getSecondaryTitle());
                 ((TextView) holder.itemView.findViewById(R.id.tertiaryTitle)).setText(mDataset.get(position).getTertiaryTitle());
@@ -163,6 +183,35 @@ public class HistoryAdapter extends RecyclerView.Adapter {
 
                 ((ImageView) holder.itemView.findViewById(R.id.food_icon)).setImageResource(mDataset.get(position).getRelevantImage());
                 break;
+            case StreamTypes.TYPE_GALLERY:
+                ((TextView) holder.itemView.findViewById(R.id.title)).setText(mDataset.get(position).getTitle());
+                Ion.with(((ImageView) holder.itemView.findViewById(R.id.hero)))
+                        .placeholder(R.drawable.ic_launcher)
+                        .load(((StreamPhoto) mDataset.get(position)).getEntry().getURI().toString());
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Open up data activity -- Same as historyItem
+                        Intent i = new Intent(mContext, FoodInfo.class);
+                        i.putExtra("FOOD_NAME", ((TextView) holder.itemView.findViewById(R.id.title)).getText());
+                        i.putExtra("FOOD_CALORIES", ((StreamPhoto)mDataset.get(position)).getEntry().getCalories());
+                        i.putExtra("FOOD_CARBS", ((StreamPhoto)mDataset.get(position)).getEntry().getCarbs());
+                        i.putExtra("FOOD_FAT", ((StreamPhoto)mDataset.get(position)).getEntry().getFat());
+                        i.putExtra("FOOD_PROTEIN", ((StreamPhoto)mDataset.get(position)).getEntry().getProtein());
+                        i.putExtra("FOOD_SODIUM", ((StreamPhoto)mDataset.get(position)).getEntry().getSodium());
+                        i.putExtra("FOOD_URI", ((StreamPhoto)mDataset.get(position)).getEntry().getURI().toString());
+                        i.putExtra("FOOD_DESCRIPTION", ((StreamPhoto) mDataset.get(position)).getEntry().getSubtitle());
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { //Smexy activity transition
+                            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext,
+                                    Pair.create(holder.itemView.findViewById(R.id.food_icon), "food_icon"),
+                                    Pair.create(holder.itemView.findViewById(R.id.title), "food_name"));
+                            mContext.startActivity(i, options.toBundle());
+                        } else {
+                            mContext.startActivity(i);
+                        }
+                    }
+                });
+                break;
         }
     }
     @Override
@@ -178,5 +227,14 @@ public class HistoryAdapter extends RecyclerView.Adapter {
 
     public int color(int id) {
         return mContext.getResources().getColor(id);
+    }
+    public void setAnimation(View viewToAnimate, int position) {
+        // If the bound view wasn't previously displayed on screen, it's animated
+        if (position > lastPosition)
+        {
+            Animation animation = AnimationUtils.loadAnimation(mContext, android.R.anim.fade_in);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
+        }
     }
 }

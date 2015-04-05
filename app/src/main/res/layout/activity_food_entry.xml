@@ -40,12 +40,12 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:id="@+id/image_edit"
-                android:src="@android:drawable/ic_menu_edit"/>
+                android:src="@drawable/ic_edit_black_18dp"/>
             <ImageButton
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:id="@+id/image_share"
-                android:src="@android:drawable/ic_menu_share"/>
+                android:src="@drawable/ic_share_black_18dp"/>
         </LinearLayout>
     </LinearLayout>
     <com.melnykov.fab.FloatingActionButton
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_launcher"
+        android:src="@drawable/ic_check_white_18dp"
         fab:fab_colorNormal="@color/accent"
         fab:fab_colorPressed="@color/accent_dark"
         fab:fab_colorRipple="@color/ripple" />

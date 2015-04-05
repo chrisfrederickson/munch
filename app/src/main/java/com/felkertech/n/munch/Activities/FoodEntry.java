@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.felkertech.n.munch.R;
 import com.felkertech.n.munch.Utils.FoodSuggestionsAdapter;
@@ -87,8 +88,9 @@ public class FoodEntry extends ActionBarActivity {
                         finish();
                     }
                 };
-                mHandler.sendEmptyMessageDelayed(0, 3000);
+                mHandler.sendEmptyMessageDelayed(0, 300);
                 //TODO Loader
+                Toast.makeText(getApplication(), "Adding data...", Toast.LENGTH_SHORT).show();
             }
         });
 
