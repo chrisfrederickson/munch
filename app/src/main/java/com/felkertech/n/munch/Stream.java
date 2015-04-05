@@ -1,6 +1,7 @@
 package com.felkertech.n.munch;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.UserManager;
 import android.provider.MediaStore;
@@ -33,6 +35,7 @@ import com.felkertech.n.munch.Activities.ApplicationSettings;
 import com.felkertech.n.munch.Activities.CameraPro;
 import com.felkertech.n.munch.Activities.FoodEntry;
 import com.felkertech.n.munch.Objects.AdviceCard;
+import com.felkertech.n.munch.Objects.CalendarItem;
 import com.felkertech.n.munch.Objects.DateItem;
 import com.felkertech.n.munch.Objects.HistoryItem;
 import com.felkertech.n.munch.Objects.StreamItem;
@@ -66,7 +69,7 @@ public class Stream extends ActionBarActivity {
     Toolbar mToolbar;
     RecyclerView mRecycler;
     RecyclerView.LayoutManager mGridLayout;
-    RecyclerView.Adapter mAdapter;
+    HistoryAdapter mAdapter;
     StreamItem[] mData;
     public static String TAG = "munch::Stream";
 
@@ -117,7 +120,7 @@ public class Stream extends ActionBarActivity {
     public void initDrawer() {
         AccountHeader.Result headerResult = new AccountHeader()
                 .withActivity(this)
-                .withHeaderBackground(R.drawable.banner_Supreme_pizza)
+                .withHeaderBackground(R.drawable.banner_supreme_pizza)
                 .addProfiles(
                         /*new ProfileDrawerItem().withName("Me").withEmail("").withIcon(getResources().getDrawable(R.drawable.ic_launcher))*/
                 )
@@ -134,12 +137,12 @@ public class Stream extends ActionBarActivity {
                 .withTranslucentStatusBar(true)
                 .withAccountHeader(headerResult)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName("History").withIcon(R.drawable.ic_book_grey600_18dp),
-                        new PrimaryDrawerItem().withName("Recommendations").withIcon(R.drawable.ic_inbox_grey600_18dp),
-                        new PrimaryDrawerItem().withName("Calendar Heat Map").withIcon(R.drawable.ic_event_note_grey600_18dp),
-                        new PrimaryDrawerItem().withName("Gallery").withIcon(R.drawable.ic_image_grey600_18dp),
+                        new PrimaryDrawerItem().withName("History").withIcon(R.drawable.ic_book_grey600_24dp),
+                        new PrimaryDrawerItem().withName("Recommendations").withIcon(R.drawable.ic_inbox_grey600_24dp),
+                        new PrimaryDrawerItem().withName("Calendar Heat Map").withIcon(R.drawable.ic_event_note_grey600_24dp),
+                        new PrimaryDrawerItem().withName("Gallery").withIcon(R.drawable.ic_image_grey600_24dp),
                         new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName("Settings").withIcon(R.drawable.ic_settings_grey600_18dp)
+                        new SecondaryDrawerItem().withName("Settings").withIcon(R.drawable.ic_settings_grey600_24dp)
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -147,11 +150,11 @@ public class Stream extends ActionBarActivity {
                         // do something with the clicked item :D
                         switch(position) {
                             case 1: //History
-                                Toast.makeText(getApplicationContext(), "History", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), "History", Toast.LENGTH_SHORT).show();
                                 refresh();
                                 return;
                             case 2: //Recommendations
-                                Toast.makeText(getApplicationContext(), "Recommendations", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), "Recommendations", Toast.LENGTH_SHORT).show();
                                 refreshRecommendations();
                                 return;
                             //0 is a divider
@@ -160,13 +163,14 @@ public class Stream extends ActionBarActivity {
                                 //Or use a function to display a layout
                                 //Shows past weeks on a calendar -- color is darker for nutritious days
                                 //Tap one will lead you to the history and scroll to that position
-                                Toast.makeText(getApplicationContext(), "Calendar Heat Map", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), "Calendar Heat Map", Toast.LENGTH_SHORT).show();
+                                refreshCalendar();
                                 return;
                             case 4: //Gallery
                                 //Load photos from directory and display them, will go to the foodinfo screen
                                 //Populate with photolayout
                                 //Do a refresh operation;
-                                Toast.makeText(getApplicationContext(), "Gallery", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), "Gallery", Toast.LENGTH_SHORT).show();
                                 refreshGallery();
                                 return;
                             case 6: //Settings
@@ -222,11 +226,32 @@ public class Stream extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_insert) {
             Intent i = new Intent(this, FoodEntry.class);
-            startActivity(i);
+            if(Build.VERSION.SDK_INT >=Build.VERSION_CODES.JELLY_BEAN) {
+                ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.enter_left, R.anim.do_nothing);
+                startActivity(i, options.toBundle());
+            } else
+                startActivity(i);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    //Occasionally, the camera will close this activity to run intent.
+    //On return nothing is saved in photopath
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current game state
+        savedInstanceState.putString("MCURRENTPHOTOPATH", mCurrentPhotoPath);
+
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+    }
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Always call the superclass so it can restore the view hierarchy
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // Restore state members from saved instance
+        mCurrentPhotoPath = savedInstanceState.getString("MCURRENTPHOTOPATH");
     }
     private final static int
             CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
@@ -234,20 +259,27 @@ public class Stream extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case ACTION_TAKE_PHOTO_B:
+                Log.d(TAG, "ACTION_TAKE_PHOTO_B "+resultCode+" == "+RESULT_OK);
                 if (resultCode == RESULT_OK) {
+                    Log.d(TAG, "HandleBigCameraPhoto");
+                    Log.d(TAG, mCurrentPhotoPath+"");
                     handleBigCameraPhoto();
                 }
                 break;
         }
+//        overridePendingTransition(R.anim.enter_left, R.anim.exit_right);
+        super.onActivityResult(requestCode, resultCode, data);
     }
     public void refresh() {
+        if(mAdapter != null)
+            mAdapter.hideAll();
         mToolbar.setTitle("My History");
         //TODO Come up with ways to generate content
         ArrayList<StreamItem> items = new ArrayList<StreamItem>();
-        items.add(new AdviceCard("Red Vegetables",
-                "Have red vegetables like lettuce or broccoli for lunch in order to improve your potassium levels",
+        items.add(new AdviceCard("Fruit Salad",
+                "Fruit salads are great ways to get vitamins",
                 "Red power!",
-                R.drawable.ic_launcher));
+                R.drawable.banner_n2_fruit_salad));
         FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getApplicationContext());
         SQLiteDatabase rdb = mDbHelper.getReadableDatabase();
         SQLiteDatabase wdb = mDbHelper.getWritableDatabase();
@@ -272,7 +304,7 @@ public class Stream extends ActionBarActivity {
                 header = test;
                 items.add(new DateItem(test));
             }
-            items.add(new HistoryItem(fte.getFood(), fte.getSubtitle(), fte.getCalories(), getAppropriateIcon(fte.getFood()), fte));
+            items.add(new HistoryItem(fte.getFood(), fte.getSubtitle(), fte.getCalories(), AppManager.getAppropriateIcon(fte.getFood()), fte));
         }
 
         /*items.add(new HistoryItem("Apple", "High in Fiber", 150, R.drawable.ic_launcher));
@@ -285,6 +317,7 @@ public class Stream extends ActionBarActivity {
         mRecycler.setAdapter(mAdapter);
     }
     public void refreshRecommendations() {
+        mAdapter.hideAll();
         mToolbar.setTitle("Recommendations");
         //Generate some cards, adapt based on time of day
         int hour = new Date().getHours();
@@ -325,7 +358,42 @@ public class Stream extends ActionBarActivity {
         mAdapter = new HistoryAdapter(items, Stream.this);
         mRecycler.setAdapter(mAdapter);
     }
+    public void refreshCalendar() {
+        mAdapter.hideAll();
+        mToolbar.setTitle("Calendar");
+        ArrayList<StreamItem> items = new ArrayList<>();
+        FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getApplicationContext());
+        SQLiteDatabase rdb = mDbHelper.getReadableDatabase();
+        SQLiteDatabase wdb = mDbHelper.getWritableDatabase();
+        //FIXME Should not create database all the time as it resets
+        mDbHelper.onCreate(wdb);
+        ArrayList<FoodTableEntry> entries = mDbHelper.readAll(rdb);
+        Iterator<FoodTableEntry> i = entries.iterator();
+        Date header = new Date();
+        int calories = 0;
+        while(i.hasNext()) {
+            //Store all the data by date
+            FoodTableEntry fte = i.next();
+            Date test = new Date();
+            test.setTime(fte.getTimestamp());
+            calories += fte.getCalories();
+            if(test.getDate() != header.getDate()) {
+                //New data appears, post
+                header = test;
+                DateItem d = new DateItem(test);
+//                items.add(new DateItem(test));
+                items.add(new CalendarItem(d.convertDate(test), calories));
+//                items.add(new HistoryItem(fte.getFood(), fte.getSubtitle(), fte.getCalories(), AppManager.getAppropriateIcon(fte.getFood()), fte));
+                calories = 0;
+            }
+        }
+        Log.d(TAG, "Passing "+items.size()+" items into Adapter");
+        //Now pass it
+        mAdapter = new HistoryAdapter(items, Stream.this);
+        mRecycler.setAdapter(mAdapter);
+    }
     public void refreshGallery() {
+        mAdapter.hideAll();
         mToolbar.setTitle("Gallery");
         ArrayList<StreamItem> items = new ArrayList<StreamItem>();
         FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getApplicationContext());
@@ -389,10 +457,12 @@ public class Stream extends ActionBarActivity {
                         f = setUpPhotoFile();
                         mCurrentPhotoPath = f.getAbsolutePath();
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                        Log.d(TAG, mCurrentPhotoPath);
                     } catch (IOException e) {
                         e.printStackTrace();
                         f = null;
                         mCurrentPhotoPath = null;
+                        Log.d(TAG, e.getMessage()+" Photo Not Saved");
                         Toast.makeText(this, "Photo not saved: "+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                     break;
@@ -402,17 +472,20 @@ public class Stream extends ActionBarActivity {
         } catch(Exception e) {
             Toast.makeText(this, "Camera broke: "+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+        Log.d(TAG, "opening cam");
         startActivityForResult(takePictureIntent, actionCode);
     }
     private File setUpPhotoFile() throws IOException {
         File f = createImageFile();
-        mCurrentPhotoPath = f.getAbsolutePath();
+//        mCurrentPhotoPath = f.getAbsolutePath();
         return f;
     }
     private void handleBigCameraPhoto() {
+        Log.d(TAG, "Handle");
         try {
             Log.d(TAG, "handleBigCameraPhoto " + mCurrentPhotoPath.toString());
         } catch(Exception e) {
+            Log.d(TAG, e.getMessage()+" ");
             return;
         }
         if (mCurrentPhotoPath != null) {
@@ -460,62 +533,5 @@ public class Stream extends ActionBarActivity {
     }
     private String getAlbumName() {
         return "Munch";
-    }
-    private int getAppropriateIcon(String name) {
-        name = name.toLowerCase();
-        if(name.contains("pineapple"))
-            return R.drawable.pineapple;
-        if(name.contains("apple")) {
-            return R.drawable.apple55;
-        }
-        if(name.contains("turkey"))
-            return R.drawable.turkey7;
-        if(name.contains("tea"))
-            return R.drawable.tea24;
-        if(name.contains("cake") || name.contains("pie"))
-            return R.drawable.sweet9;
-        if(name.contains("sushi"))
-            return R.drawable.sushi3;
-        if(name.contains("beef") || name.contains("steak") || name.contains("lamb"))
-            return R.drawable.steak;
-        if(name.contains("coke") || name.contains("soda") || name.contains("coffee"))
-            return R.drawable.soda7;
-        if(name.contains("omlette") || name.contains("egg"))
-            return R.drawable.silhouette81;
-        if(name.contains("sandwich"))
-            return R.drawable.sandwich;
-        if(name.contains("pizza"))
-            return R.drawable.pizza3;
-        if(name.contains("lemon"))
-            return R.drawable.lemon10;
-        if(name.contains("dog"))
-            return R.drawable.hot33;
-        if(name.contains("carrot"))
-            return R.drawable.healthy_food5;
-        if(name.contains("banana"))
-            return R.drawable.healthy_food4;
-        if(name.contains("burger"))
-            return R.drawable.hamburger;
-        if(name.contains("grape"))
-            return R.drawable.grapes1;
-        if(name.contains("pear"))
-            return R.drawable.fruit51;
-        if(name.contains("orange"))
-            return R.drawable.fruit42;
-        if(name.contains("milk"))
-            return R.drawable.fresh7;
-        if(name.contains("fish"))
-            return R.drawable.fish52;
-        if(name.contains("vegetable") || name.contains("broccoli"))
-            return R.drawable.broccoli;
-        if(name.contains("bread"))
-            return R.drawable.bread14;
-        if(name.contains("drink") || name.contains("water"))
-            return R.drawable.drink81;
-        if(name.contains("beer"))
-            return R.drawable.drink24;
-        if(name.contains("ramen") || name.contains("rice") || name.contains("noodle"))
-            return R.drawable.chinese_food1;
-        return R.drawable.plants6;
     }
 }

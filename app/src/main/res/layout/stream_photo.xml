@@ -29,6 +29,6 @@
             android:scaleType="centerInside"
             android:layout_height="32dp"
             android:layout_marginLeft="-48dp"
-            android:src="@drawable/ic_arrow_forward_white_18dp"/>
+            android:src="@drawable/ic_arrow_forward_white_36dp"/>
         </LinearLayout>
 </FrameLayout>

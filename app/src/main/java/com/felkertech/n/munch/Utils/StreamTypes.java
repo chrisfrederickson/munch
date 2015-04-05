@@ -8,4 +8,5 @@ public abstract class StreamTypes {
     public static final int TYPE_ITEM = 1;
     public static final int TYPE_DAY = 2;
     public static final int TYPE_GALLERY = 3;
+    public static final int TYPE_CALENDAR = 4;
 }

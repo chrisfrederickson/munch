@@ -117,6 +117,8 @@ public class ApplicationSettings extends PreferenceActivity {
         addPreferencesFromResource(R.xml.pref_general);
         findPreference(getString(R.string.app_version)).setSummary(VERSION);
         bindPreferenceSummaryToValue(findPreference(getString(R.string.sm_fitness)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.sm_age)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.sm_sex)));
         /*bindPreferenceSummaryToValue(findPreference("TEMP_LOW_THRESHOLD"));
         bindPreferenceSummaryToValue(findPreference("TEMP_HIGH_THRESHOLD"));
         try {

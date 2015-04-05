@@ -51,12 +51,13 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_width="match_parent"
                 android:elevation="4dp">
-                <ImageView
+                <ImageButton
                     android:layout_width="36dp"
                     android:layout_height="36dp"
+                    android:background="@android:color/transparent"
                     android:scaleType="centerInside"
                     android:onClick="goBack"
-                    android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"/>
+                    android:src="@drawable/ic_arrow_back_white_24dp"/>
             </android.support.v7.widget.Toolbar>
             </LinearLayout>
     </FrameLayout>

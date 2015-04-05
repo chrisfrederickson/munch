@@ -118,6 +118,13 @@ public class FoodEntry extends ActionBarActivity {
         });
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        Log.d(TAG, "Destroying foodntry");
+        overridePendingTransition(R.anim.do_nothing, R.anim.exit_right);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

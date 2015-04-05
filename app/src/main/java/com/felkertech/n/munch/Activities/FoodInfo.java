@@ -1,8 +1,10 @@
 package com.felkertech.n.munch.Activities;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
@@ -16,8 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.felkertech.n.munch.R;
+import com.felkertech.n.munch.Utils.AppManager;
 import com.koushikdutta.ion.Ion;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,6 +49,7 @@ public class FoodInfo extends ActionBarActivity {
             if(i.hasExtra("FOOD_NAME")) {
                 mFood = i.getStringExtra("FOOD_NAME");
                 ((TextView) findViewById(R.id.title)).setText(mFood);
+                ((ImageView) findViewById(R.id.food_icon)).setImageDrawable(getResources().getDrawable(AppManager.getAppropriateIcon(mFood)));
             } else if(i.hasExtra("FOOD_TYPE")) { //For things like 'Green Vegetables'
                 mFood = i.getStringExtra("FOOD_TYPE");
                 if(mFood.equals("Salt Deposits")) {
@@ -112,6 +117,13 @@ public class FoodInfo extends ActionBarActivity {
     }
 
     @Override
+    public void finish() {
+        super.finish();
+        Log.d(TAG, "Destroying foodinfo");
+        overridePendingTransition(R.anim.do_nothing, R.anim.exit_right);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -128,12 +140,19 @@ public class FoodInfo extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
     public void goBack(View view) {
-        NavUtils.navigateUpFromSameTask(this);
+//        NavUtils.navigateUpFromSameTask(this);
+        Intent i = NavUtils.getParentActivityIntent(this);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.enter_left, R.anim.do_nothing);
+            startActivity(i, options.toBundle());
+        } else
+            startActivity(i);
     }
     private void share() {
         //TODO Create share intent, pass some info along
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("image/jpeg");
+        Log.d(TAG, getPhotoUri().toString());
         share.putExtra(Intent.EXTRA_STREAM, getPhotoUri());
         startActivity(Intent.createChooser(share, "Share Image"));
     }
@@ -160,6 +179,8 @@ public class FoodInfo extends ActionBarActivity {
      */
     public Uri getPhotoUri() {
         if(!photoUri.isEmpty()) {
+            if(photoUri.contains("file:"))
+                return Uri.parse(photoUri);
             return Uri.parse("file:///"+photoUri);
         }
         Log.d(TAG, "PhotoBitmap " + getPhoto());

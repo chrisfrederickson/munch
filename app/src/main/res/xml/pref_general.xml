@@ -3,12 +3,23 @@
         android:key="@string/sm_notifications"
         android:title="@string/notifications"
         android:defaultValue="true"/>
+    <EditTextPreference
+        android:key="@string/sm_age"
+        android:defaultValue="18"
+        android:title="@string/age"
+        android:inputType="number"/>
     <ListPreference
         android:key="@string/sm_fitness"
         android:title="@string/physical_activity"
         android:defaultValue="@string/active"
         android:entries="@array/fitness_levels"
         android:entryValues="@array/sm_fitness_values"/>
+    <ListPreference
+        android:key="@string/sm_sex"
+        android:title="@string/sex"
+        android:defaultValue="@string/no_sex"
+        android:entries="@array/sex_values"
+        android:entryValues="@array/sm_sex_values"/>
     <PreferenceCategory
         android:title="@string/dietary_restrictions">
         <CheckBoxPreference
@@ -56,7 +67,7 @@
             android:selectable="false"
             android:summary="Some photos taken from Wikimedia;\n
             \n'Steinbock1000943' by Gunnar Ries - Own work (own photo). Licensed under CC BY-SA 2.5 via Wikimedia Commons - http://commons.wikimedia.org/wiki/File:Steinbock1000943.JPG#/media/File:Steinbock1000943.JPG
-            \n'Supreme pizza' by Scott Bauer - http://www.ars.usda.gov/is/graphics/photos/mar01/k7633-3.htm. Licensed under Public Domain via Wikimedia Commons - http://commons.wikimedia.org/wiki/File:Supreme_pizza.jpg#/media/File:Supreme_pizza.jpg
+            \n\n'Supreme pizza' by Scott Bauer - http://www.ars.usda.gov/is/graphics/photos/mar01/k7633-3.htm. Licensed under Public Domain via Wikimedia Commons - http://commons.wikimedia.org/wiki/File:Supreme_pizza.jpg#/media/File:Supreme_pizza.jpg
             "/>
     </PreferenceCategory>
 </PreferenceScreen>

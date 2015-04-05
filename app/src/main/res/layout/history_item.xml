@@ -52,11 +52,12 @@
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/arrow"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginRight="16dp"
-                android:src="@drawable/ic_arrow_forward_grey600_18dp"/>
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_arrow_forward_grey600_24dp"/>
             </LinearLayout>
     </LinearLayout>
     <View

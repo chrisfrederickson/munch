@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.felkertech.n.munch.Activities.FoodInfo">
     <item android:id="@+id/action_edit" android:title="Edit"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:icon="@drawable/ic_edit_white_36dp"
         android:orderInCategory="100" app:showAsAction="always" />
     <item android:id="@+id/action_share" android:title="Share"
-        android:icon="@android:drawable/ic_menu_share"
+        android:icon="@drawable/ic_share_white_36dp"
         android:orderInCategory="100" app:showAsAction="always" />
 </menu>

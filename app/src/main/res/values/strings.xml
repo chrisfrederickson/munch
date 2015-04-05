@@ -28,7 +28,8 @@
     <string name="inactive">Fairly Inactive</string>
     <string name="active">Active</string>
     <string name="vigorous">Vigorous</string>
-
+    <string name="sm_age">USER_AGE</string>
+    <string name="age">Age</string>
     <string-array name="fitness_levels">
         <item>@string/inactive</item>
         <item>@string/active</item>
@@ -38,6 +39,25 @@
         <item>0</item>
         <item>1</item>
         <item>2</item>
+    </string-array>
+
+    <string name="sm_sex">USER_SEX</string>
+    <string name="sex">Sex</string>
+    <string name="male_sex">Male</string>
+    <string name="female_sex">Female</string>
+    <string name="other_sex">Other</string>
+    <string name="no_sex">Prefer not to answer</string>
+    <string-array name="sex_values">
+        <item>@string/female_sex</item>
+        <item>@string/male_sex</item>
+        <item>@string/other_sex</item>
+        <item>@string/no_sex</item>
+    </string-array>
+    <string-array name="sm_sex_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
 
     <string name="sm_fitness">Active</string>
