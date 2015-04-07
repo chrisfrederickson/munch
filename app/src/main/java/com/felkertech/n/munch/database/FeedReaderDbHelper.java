@@ -32,8 +32,46 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                     FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM + TEXT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_TIMESTAMP + LONG_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES + FLOAT_TYPE + COMMA_SEP +
-                    FeedReaderContract.FeedEntry.COLUMN_NAME_PROTEIN + INT_TYPE + COMMA_SEP +
-                    FeedReaderContract.FeedEntry.COLUMN_NAME_SODIUM + INT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_WATER + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_PROTEIN + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_LIPID + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_CARB + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_FIBER + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_SUGAR + FLOAT_TYPE+ COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_CALCIUM + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_IRON + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_MAGNESIUM + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_PHOSPHORUS + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_POTASSIUM + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_SODIUM + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_ZINC + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_COPPER + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_MANGANESE + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_SELENIUM + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_C + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_THIAMIN + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_RIBOFLAVIN + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_NIACIN + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_PHANTO_ACID + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_B6 + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_FOLATE + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_CHOLINE + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_B12 + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_A + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_RETINOL + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_ALPHA_CAROT + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_BETA_CAROT + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_BETA_CRYPT + FLOAT_TYPE+ COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_LYCOPHENE + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_LUTEIN_ZEAXANTHIN + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_E + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_D + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_K + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_SATURATED_FAT + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_MONOSATURATED_FAT + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_POLYSATURATED_FAT + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_CHOLESTEROL + FLOAT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_SODIUM + FLOAT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI + TEXT_TYPE +
                     " )";
 
@@ -65,16 +103,51 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
     public void insert(SQLiteDatabase db, FoodTableEntry fte) {
-        Log.d(TAG, "Inserting "+fte.getFood());
+        Log.d(TAG, "Inserting " + fte.getFood());
         ContentValues values = new ContentValues();
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_ENTRY_ID, fte.getId());
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM, fte.getFood());
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TIMESTAMP, fte.getTimestamp());
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES, fte.getCalories());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_WATER, fte.getWater());
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_PROTEIN, fte.getProtein());
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CARBS, fte.getCarbs());
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_FAT, fte.getFat());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_LIPID, fte.getLipid());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CARB, fte.getCarb());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_FIBER, fte.getFiber());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_SUGAR, fte.getSugar());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CALCIUM, fte.getCalcium());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_IRON, fte.getIron());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_MAGNESIUM, fte.getMagnesium());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_PHOSPHORUS, fte.getPhosphorus());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_POTASSIUM, fte.getPotassium());
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_SODIUM, fte.getSodium());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_ZINC, fte.getZinc());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_COPPER, fte.getCopper());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_MANGANESE, fte.getManganese());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_SELENIUM, fte.getSelenium());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_C, fte.getVit_c());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_THIAMIN, fte.getThiamin());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_RIBOFLAVIN, fte.getRiboflavin());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_NIACIN, fte.getNiacin());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_PHANTO_ACID, fte.getPhanto_acid());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_B6, fte.getVit_b6());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_FOLATE, fte.getFolate());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CHOLINE, fte.getCholine());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_B12, fte.getVit_b12());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_A, fte.getVit_a());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_RETINOL, fte.getRetinol());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_ALPHA_CAROT, fte.getAlpha_carot());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_BETA_CAROT, fte.getBeta_carot());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_BETA_CRYPT, fte.getBeta_crypt());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_LYCOPHENE, fte.getLycophene());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_LUTEIN_ZEAXANTHIN, fte.getLutein_zeaxanthin());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_E, fte.getVit_e());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_D, fte.getVit_d());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_K, fte.getVit_k());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_SATURATED_FAT, fte.getSaturated_fat());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_MONOSATURATED_FAT, fte.getMonosaturated_fat());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_POLYSATURATED_FAT, fte.getPolysaturated_fat());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CHOLESTEROL, fte.getCholesterol());
         if(fte.getURI() == null)
             values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI, "");
         else
@@ -98,9 +171,43 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                 FeedReaderContract.FeedEntry.COLUMN_NAME_TIMESTAMP,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_PROTEIN,
-                FeedReaderContract.FeedEntry.COLUMN_NAME_CARBS,
-                FeedReaderContract.FeedEntry.COLUMN_NAME_FAT,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_LIPID,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_CARB,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_FIBER,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_SUGAR,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_CALCIUM,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_IRON,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_MAGNESIUM,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_PHOSPHORUS,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_POTASSIUM,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_SODIUM,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_ZINC,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_COPPER,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_MANGANESE,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_SELENIUM,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_C,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_THIAMIN,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_RIBOFLAVIN,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_NIACIN,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_PHANTO_ACID,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_B6,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_FOLATE,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_CHOLINE,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_B12,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_A,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_RETINOL,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_ALPHA_CAROT,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_BETA_CAROT,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_BETA_CRYPT,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_LYCOPHENE,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_LUTEIN_ZEAXANTHIN,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_E,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_D,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_K,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_SATURATED_FAT,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_MONOSATURATED_FAT,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_POLYSATURATED_FAT,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_CHOLESTEROL,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI
         };
 
@@ -128,12 +235,47 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                             c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_ENTRY_ID)),
                             c.getLong(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TIMESTAMP)),
                             c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM)),
-                            c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES)),
-                            c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_PROTEIN)),
-                            c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CARBS)),
-                            c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FAT)),
-                            c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_SODIUM)),
-                            c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI))
+                            c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_WATER)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_PROTEIN)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_LIPID)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CARB)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FIBER)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_SUGAR)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CALCIUM)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_IRON)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_MAGNESIUM)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_PHOSPHORUS)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_POTASSIUM)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_SODIUM)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_ZINC)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_COPPER)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_MANGANESE)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_SELENIUM)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_C)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_THIAMIN)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_RIBOFLAVIN)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_NIACIN)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_PHANTO_ACID)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_B6)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FOLATE)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CHOLINE)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_B12)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_A)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_RETINOL)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_ALPHA_CAROT)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_BETA_CAROT)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_BETA_CRYPT)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_LYCOPHENE)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_LUTEIN_ZEAXANTHIN)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_E)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_D)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_K)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_SATURATED_FAT)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_MONOSATURATED_FAT)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_POLYSATURATED_FAT)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CHOLESTEROL))
                     )
             );
             Log.d(TAG, "Read entry "+c.getPosition()+" / "+entries.size()+" - "+
