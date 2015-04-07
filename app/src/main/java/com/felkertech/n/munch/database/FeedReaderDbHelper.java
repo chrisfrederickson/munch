@@ -16,13 +16,14 @@ import java.util.Date;
  */
 public class FeedReaderDbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "Munch.db";
     public static final String TAG = "munch::dbHelper";
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String LONG_TYPE = " BIGINT";
     private static final String INT_TYPE = " INTEGER";
+    private static final String FLOAT_TYPE = " REAL";
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_ENTRIES = /* IF NOT EXISTS */
             "CREATE TABLE  IF NOT EXISTS " + FeedReaderContract.FeedEntry.TABLE_NAME + " (" +
@@ -30,10 +31,8 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                     FeedReaderContract.FeedEntry.COLUMN_NAME_ENTRY_ID + INT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM + TEXT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_TIMESTAMP + LONG_TYPE + COMMA_SEP +
-                    FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES + INT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES + FLOAT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_PROTEIN + INT_TYPE + COMMA_SEP +
-                    FeedReaderContract.FeedEntry.COLUMN_NAME_CARBS + INT_TYPE + COMMA_SEP +
-                    FeedReaderContract.FeedEntry.COLUMN_NAME_FAT + INT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_SODIUM + INT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI + TEXT_TYPE +
                     " )";

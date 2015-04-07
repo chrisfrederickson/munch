@@ -75,7 +75,7 @@
                     android:fontFamily="sans-serif-condensed"
                     android:textSize="14sp"
                     android:layout_marginRight="16dp"
-                    android:background="@android:color/transparent"
+                    style="?android:attr/borderlessButtonStyle"
                     android:textColor="@color/teal_500"/>
                 <Button
                     android:id="@+id/button_learn"
@@ -84,7 +84,7 @@
                     android:fontFamily="sans-serif-condensed"
                     android:text="LEARN MORE"
                     android:textSize="14sp"
-                    android:background="@android:color/transparent"
+                    style="?android:attr/borderlessButtonStyle"
                     android:textColor="@color/teal_500"/>
             </LinearLayout>
         </RelativeLayout>

@@ -3,6 +3,9 @@ package com.felkertech.n.munch.Activities;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -49,7 +52,10 @@ public class FoodInfo extends ActionBarActivity {
             if(i.hasExtra("FOOD_NAME")) {
                 mFood = i.getStringExtra("FOOD_NAME");
                 ((TextView) findViewById(R.id.title)).setText(mFood);
-                ((ImageView) findViewById(R.id.food_icon)).setImageDrawable(getResources().getDrawable(AppManager.getAppropriateIcon(mFood)));
+                Drawable mDrawable = getResources().getDrawable(AppManager.getAppropriateIcon(mFood));
+                mDrawable.setColorFilter(new
+                        PorterDuffColorFilter(0xffffff00, PorterDuff.Mode.DST));
+                ((ImageView) findViewById(R.id.food_icon)).setImageDrawable(mDrawable);
             } else if(i.hasExtra("FOOD_TYPE")) { //For things like 'Green Vegetables'
                 mFood = i.getStringExtra("FOOD_TYPE");
                 if(mFood.equals("Salt Deposits")) {

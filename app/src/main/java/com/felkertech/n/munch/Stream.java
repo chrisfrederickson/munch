@@ -148,41 +148,50 @@ public class Stream extends ActionBarActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id, IDrawerItem drawerItem) {
                         // do something with the clicked item :D
-                        switch(position) {
-                            case 1: //History
-//                                Toast.makeText(getApplicationContext(), "History", Toast.LENGTH_SHORT).show();
-                                refresh();
-                                return;
-                            case 2: //Recommendations
-//                                Toast.makeText(getApplicationContext(), "Recommendations", Toast.LENGTH_SHORT).show();
-                                refreshRecommendations();
-                                return;
-                            //0 is a divider
-                            case 3: //Calendar
-                                //Might want to make an activity
-                                //Or use a function to display a layout
-                                //Shows past weeks on a calendar -- color is darker for nutritious days
-                                //Tap one will lead you to the history and scroll to that position
-//                                Toast.makeText(getApplicationContext(), "Calendar Heat Map", Toast.LENGTH_SHORT).show();
-                                refreshCalendar();
-                                return;
-                            case 4: //Gallery
-                                //Load photos from directory and display them, will go to the foodinfo screen
-                                //Populate with photolayout
-                                //Do a refresh operation;
-//                                Toast.makeText(getApplicationContext(), "Gallery", Toast.LENGTH_SHORT).show();
-                                refreshGallery();
-                                return;
-                            case 6: //Settings
-//                                Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(getApplicationContext(), ApplicationSettings.class);
-                                startActivity(i);
-                                return;
-                        }
+                        handleDrawer(position);
                     }
                 })
                 .withSelectedItem(0)
                 .build();
+    }
+    public void handleDrawer(int position) {
+        switch(position) {
+            case 1: //History
+//                                Toast.makeText(getApplicationContext(), "History", Toast.LENGTH_SHORT).show();
+                refresh();
+                return;
+            case 2: //Recommendations
+//                                Toast.makeText(getApplicationContext(), "Recommendations", Toast.LENGTH_SHORT).show();
+                refreshRecommendations();
+                return;
+            //0 is a divider
+            case 3: //Calendar
+                //Might want to make an activity
+                //Or use a function to display a layout
+                //Shows past weeks on a calendar -- color is darker for nutritious days
+                //Tap one will lead you to the history and scroll to that position
+//                                Toast.makeText(getApplicationContext(), "Calendar Heat Map", Toast.LENGTH_SHORT).show();
+                refreshCalendar();
+                return;
+            case 4: //Gallery
+                //Load photos from directory and display them, will go to the foodinfo screen
+                //Populate with photolayout
+                //Do a refresh operation;
+//                                Toast.makeText(getApplicationContext(), "Gallery", Toast.LENGTH_SHORT).show();
+                refreshGallery();
+                return;
+            case 6: //Settings
+//                                Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getApplicationContext(), ApplicationSettings.class);
+                startActivity(i);
+                return;
+        }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "Resuming activity, go to drawer item "+mDrawerCurrentSelection);
+        handleDrawer(mDrawerCurrentSelection);
     }
 
     public void x() {
@@ -238,10 +247,12 @@ public class Stream extends ActionBarActivity {
     }
     //Occasionally, the camera will close this activity to run intent.
     //On return nothing is saved in photopath
+    int mDrawerCurrentSelection;
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         // Save the user's current game state
         savedInstanceState.putString("MCURRENTPHOTOPATH", mCurrentPhotoPath);
+        savedInstanceState.putInt("DRAWERCURRENTSELECTION", mDrawerCurrentSelection);
 
         // Always call the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(savedInstanceState);
@@ -252,6 +263,7 @@ public class Stream extends ActionBarActivity {
 
         // Restore state members from saved instance
         mCurrentPhotoPath = savedInstanceState.getString("MCURRENTPHOTOPATH");
+        mDrawerCurrentSelection = savedInstanceState.getInt("DRAWERCURRENTSELECTION");
     }
     private final static int
             CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
@@ -323,7 +335,7 @@ public class Stream extends ActionBarActivity {
         int hour = new Date().getHours();
         ArrayList<StreamItem> items = new ArrayList<StreamItem>();
 
-        if(AppManager.isUserAGoat(this))
+        if(AppManager.isUserAGoat(this) || true)
             items.add(new AdviceCard("Salt Deposits", "Do you have a craving for any minerals?", "", R.drawable.goat));
 
         //TODO FIGURE OUT WAYS TO GENERATE CONTENT
@@ -379,8 +391,8 @@ public class Stream extends ActionBarActivity {
             calories += fte.getCalories();
             if(test.getDate() != header.getDate()) {
                 //New data appears, post
+                DateItem d = new DateItem(header);
                 header = test;
-                DateItem d = new DateItem(test);
 //                items.add(new DateItem(test));
                 items.add(new CalendarItem(d.convertDate(test), calories));
 //                items.add(new HistoryItem(fte.getFood(), fte.getSubtitle(), fte.getCalories(), AppManager.getAppropriateIcon(fte.getFood()), fte));
