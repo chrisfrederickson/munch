@@ -293,10 +293,10 @@ public class Stream extends ActionBarActivity {
         mToolbar.setTitle("My History");
         //TODO Come up with ways to generate content
         ArrayList<StreamItem> items = new ArrayList<StreamItem>();
-        items.add(new AdviceCard("Fruit Salad",
+        /*items.add(new AdviceCard("Fruit Salad",
                 "Fruit salads are great ways to get vitamins",
                 "Red power!",
-                R.drawable.banner_n2_fruit_salad));
+                R.drawable.banner_n2_fruit_salad));*/
         FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getApplicationContext());
         SQLiteDatabase rdb = mDbHelper.getReadableDatabase();
         SQLiteDatabase wdb = mDbHelper.getWritableDatabase();
@@ -307,6 +307,10 @@ public class Stream extends ActionBarActivity {
             /*mDbHelper.insert(wdb, new FoodTableEntry(1, yesterday.getTime(), "Potato Chips"));
             mDbHelper.insert(wdb, new FoodTableEntry(2, new Date().getTime(), "Chicken"));
             mDbHelper.insert(wdb, new FoodTableEntry(3, new Date().getTime(), "Apple"));*/
+            items.add(new AdviceCard("Get Started",
+                            "Tap on the camera button or the + to get started",
+                            "",
+                            R.drawable.banner_n2_fruit_salad));
             Log.d(TAG, "Tough Luck");
         }
         entries = mDbHelper.readAll(rdb);

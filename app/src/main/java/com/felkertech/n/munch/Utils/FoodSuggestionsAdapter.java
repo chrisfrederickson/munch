@@ -49,10 +49,10 @@ public class FoodSuggestionsAdapter extends ArrayAdapter<String> {
                             Log.d(TAG, "Running client");
                             HttpClient client = new DefaultHttpClient();
                             try {
+                                Log.d(TAG, API.suggestion(constraint.toString()));
                                 HttpGet request = new HttpGet(API.suggestion(constraint.toString()));
                                 HttpResponse response = client.execute(request);
                                 String responseBody = EntityUtils.toString(response.getEntity());
-                                Log.d(TAG, API.suggestion(constraint.toString()));
                                 Log.d(TAG, responseBody);
                                 JSONArray ja = new JSONArray(responseBody);
                                 mData = new ArrayList<>();
