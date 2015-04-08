@@ -20,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -183,14 +184,18 @@ public class Stream extends ActionBarActivity {
             case 6: //Settings
 //                                Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(getApplicationContext(), ApplicationSettings.class);
-                startActivity(i);
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.enter_left, R.anim.do_nothing);
+                    startActivity(i, options.toBundle());
+                } else
+                    startActivity(i);
                 return;
         }
     }
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "Resuming activity, go to drawer item "+mDrawerCurrentSelection);
+        Log.d(TAG, "Resuming activity, go to drawer item " + mDrawerCurrentSelection);
         handleDrawer(mDrawerCurrentSelection);
     }
 
@@ -295,14 +300,14 @@ public class Stream extends ActionBarActivity {
         FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getApplicationContext());
         SQLiteDatabase rdb = mDbHelper.getReadableDatabase();
         SQLiteDatabase wdb = mDbHelper.getWritableDatabase();
-        //FIXME Should not create database all the time as it resets
         mDbHelper.onCreate(wdb);
         ArrayList<FoodTableEntry> entries = mDbHelper.readAll(rdb);
         Date yesterday = new Date(115, 2, 19);
         if(entries.size() == 0) {
-            mDbHelper.insert(wdb, new FoodTableEntry(1, yesterday.getTime(), "Potato Chips", 700, 700, 700, 700, 700, null));
-            mDbHelper.insert(wdb, new FoodTableEntry(2, new Date().getTime(), "Chicken", 500, 500, 500, 500, 500, null));
-            mDbHelper.insert(wdb, new FoodTableEntry(3, new Date().getTime(), "Apple", 100, 100, 100, 100, 100, null));
+            /*mDbHelper.insert(wdb, new FoodTableEntry(1, yesterday.getTime(), "Potato Chips"));
+            mDbHelper.insert(wdb, new FoodTableEntry(2, new Date().getTime(), "Chicken"));
+            mDbHelper.insert(wdb, new FoodTableEntry(3, new Date().getTime(), "Apple"));*/
+            Log.d(TAG, "Tough Luck");
         }
         entries = mDbHelper.readAll(rdb);
         Iterator<FoodTableEntry> i = entries.iterator();
@@ -335,7 +340,7 @@ public class Stream extends ActionBarActivity {
         int hour = new Date().getHours();
         ArrayList<StreamItem> items = new ArrayList<StreamItem>();
 
-        if(AppManager.isUserAGoat(this) || true)
+        if(AppManager.isUserAGoat(this))
             items.add(new AdviceCard("Salt Deposits", "Do you have a craving for any minerals?", "", R.drawable.goat));
 
         //TODO FIGURE OUT WAYS TO GENERATE CONTENT

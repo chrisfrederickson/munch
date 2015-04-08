@@ -28,6 +28,7 @@ import com.felkertech.n.munch.Objects.HistoryItem;
 import com.felkertech.n.munch.Objects.StreamItem;
 import com.felkertech.n.munch.Objects.StreamPhoto;
 import com.felkertech.n.munch.Utils.StreamTypes;
+import com.felkertech.n.munch.database.FeedReaderContract;
 import com.koushikdutta.ion.Ion;
 
 import java.util.ArrayList;
@@ -190,14 +191,8 @@ public class HistoryAdapter extends RecyclerView.Adapter {
                     public void onClick(View v) {
                         //Open up data activity
                         Intent i = new Intent(mContext, FoodInfo.class);
-                        i.putExtra("FOOD_NAME", ((TextView) holder.itemView.findViewById(R.id.title)).getText());
-                        i.putExtra("FOOD_CALORIES", ((HistoryItem)mDataset.get(position)).getEntry().getCalories());
-                        i.putExtra("FOOD_CARBS", ((HistoryItem)mDataset.get(position)).getEntry().getCarbs());
-                        i.putExtra("FOOD_FAT", ((HistoryItem)mDataset.get(position)).getEntry().getFat());
-                        i.putExtra("FOOD_PROTEIN", ((HistoryItem)mDataset.get(position)).getEntry().getProtein());
-                        i.putExtra("FOOD_SODIUM", ((HistoryItem)mDataset.get(position)).getEntry().getSodium());
-                        i.putExtra("FOOD_URI", ((HistoryItem)mDataset.get(position)).getEntry().getURI().toString());
-                        i.putExtra("FOOD_DESCRIPTION", ((HistoryItem) mDataset.get(position)).getEntry().getSubtitle());
+                        i = pushFood(i, holder, position);
+
                         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { //Smexy activity transition
                             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext,
                                     Pair.create(holder.itemView.findViewById(R.id.food_icon), "food_icon"),
@@ -231,14 +226,8 @@ public class HistoryAdapter extends RecyclerView.Adapter {
                     public void onClick(View v) {
                         //Open up data activity -- Same as historyItem
                         Intent i = new Intent(mContext, FoodInfo.class);
-                        i.putExtra("FOOD_NAME", ((TextView) holder.itemView.findViewById(R.id.title)).getText());
-                        i.putExtra("FOOD_CALORIES", ((StreamPhoto)mDataset.get(position)).getEntry().getCalories());
-                        i.putExtra("FOOD_CARBS", ((StreamPhoto)mDataset.get(position)).getEntry().getCarbs());
-                        i.putExtra("FOOD_FAT", ((StreamPhoto)mDataset.get(position)).getEntry().getFat());
-                        i.putExtra("FOOD_PROTEIN", ((StreamPhoto)mDataset.get(position)).getEntry().getProtein());
-                        i.putExtra("FOOD_SODIUM", ((StreamPhoto)mDataset.get(position)).getEntry().getSodium());
-                        i.putExtra("FOOD_URI", ((StreamPhoto)mDataset.get(position)).getEntry().getURI().toString());
-                        i.putExtra("FOOD_DESCRIPTION", ((StreamPhoto) mDataset.get(position)).getEntry().getSubtitle());
+                        i = pushFood(i, holder, position);
+
                         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { //Smexy activity transition
                             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext,
                                     Pair.create(holder.itemView.findViewById(R.id.food_icon), "food_icon"),
@@ -306,7 +295,7 @@ public class HistoryAdapter extends RecyclerView.Adapter {
     }
     public int getColorMagnitude(int low, int value, int high) {
         double p = 100.0*(value-low)/(high-low);
-        Log.d(TAG, "Given parameters of "+low+", "+value+", and "+high+", we've returned "+p);
+        Log.d(TAG, "Given parameters of " + low + ", " + value + ", and " + high + ", we've returned " + p);
         if(p < 0)
             return R.color.md_red_900;
         if(p < 5)
@@ -349,5 +338,58 @@ public class HistoryAdapter extends RecyclerView.Adapter {
             return R.color.md_red_700;
         else
             return R.color.md_red_900;
+    }
+
+    /**
+     * A single method to add all the relevant food attributes to an intent
+     * @param i Intent that you wish to call soon
+     * @return Intent containing all of the food attributes as extras
+     */
+    public Intent pushFood(Intent i, RecyclerView.ViewHolder holder, int position) {
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM, ((TextView) holder.itemView.findViewById(R.id.title)).getText());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI, ((HistoryItem)mDataset.get(position)).getEntry().getURI().toString());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_TAGLINE, ((HistoryItem)mDataset.get(position)).getEntry().getTagline());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES, ((HistoryItem)mDataset.get(position)).getEntry().getCalories());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_WATER, ((HistoryItem)mDataset.get(position)).getEntry().getWater());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_PROTEIN, ((HistoryItem)mDataset.get(position)).getEntry().getProtein());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_LIPID, ((HistoryItem)mDataset.get(position)).getEntry().getLipid());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_CARB, ((HistoryItem)mDataset.get(position)).getEntry().getCarb());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_FIBER, ((HistoryItem)mDataset.get(position)).getEntry().getFiber());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_SUGAR, ((HistoryItem)mDataset.get(position)).getEntry().getSugar());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_CALCIUM, ((HistoryItem)mDataset.get(position)).getEntry().getCalcium());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_IRON, ((HistoryItem)mDataset.get(position)).getEntry().getIron());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_MAGNESIUM, ((HistoryItem)mDataset.get(position)).getEntry().getMagnesium());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_PHOSPHORUS, ((HistoryItem)mDataset.get(position)).getEntry().getPhosphorus());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_POTASSIUM, ((HistoryItem)mDataset.get(position)).getEntry().getPotassium());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_SODIUM, ((HistoryItem)mDataset.get(position)).getEntry().getSodium());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_ZINC, ((HistoryItem)mDataset.get(position)).getEntry().getZinc());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_COPPER, ((HistoryItem)mDataset.get(position)).getEntry().getCopper());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_MANGANESE, ((HistoryItem)mDataset.get(position)).getEntry().getManganese());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_SELENIUM, ((HistoryItem)mDataset.get(position)).getEntry().getSelenium());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_C, ((HistoryItem)mDataset.get(position)).getEntry().getVit_c());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_THIAMIN, ((HistoryItem)mDataset.get(position)).getEntry().getThiamin());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_RIBOFLAVIN, ((HistoryItem)mDataset.get(position)).getEntry().getRiboflavin());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_NIACIN, ((HistoryItem)mDataset.get(position)).getEntry().getNiacin());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_PHANTO_ACID, ((HistoryItem)mDataset.get(position)).getEntry().getPhanto_acid());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_B6, ((HistoryItem)mDataset.get(position)).getEntry().getVit_b6());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_FOLATE, ((HistoryItem)mDataset.get(position)).getEntry().getFolate());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_CHOLINE, ((HistoryItem)mDataset.get(position)).getEntry().getCholine());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_B12, ((HistoryItem)mDataset.get(position)).getEntry().getVit_b12());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_A, ((HistoryItem)mDataset.get(position)).getEntry().getVit_a());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_RETINOL, ((HistoryItem)mDataset.get(position)).getEntry().getRetinol());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_ALPHA_CAROT, ((HistoryItem)mDataset.get(position)).getEntry().getAlpha_carot());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_BETA_CAROT, ((HistoryItem)mDataset.get(position)).getEntry().getBeta_carot());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_BETA_CRYPT, ((HistoryItem)mDataset.get(position)).getEntry().getBeta_crypt());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_LYCOPHENE, ((HistoryItem)mDataset.get(position)).getEntry().getLycophene());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_LUTEIN_ZEAXANTHIN, ((HistoryItem)mDataset.get(position)).getEntry().getLutein_zeaxanthin());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_E, ((HistoryItem)mDataset.get(position)).getEntry().getVit_e());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_D, ((HistoryItem)mDataset.get(position)).getEntry().getVit_d());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_K, ((HistoryItem)mDataset.get(position)).getEntry().getVit_k());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_SATURATED_FAT, ((HistoryItem)mDataset.get(position)).getEntry().getSaturated_fat());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_MONOSATURATED_FAT, ((HistoryItem)mDataset.get(position)).getEntry().getMonosaturated_fat());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_POLYSATURATED_FAT, ((HistoryItem)mDataset.get(position)).getEntry().getPolysaturated_fat());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_CHOLESTEROL, ((HistoryItem)mDataset.get(position)).getEntry().getCholesterol());
+        i.putExtra("FOOD_DESCRIPTION", ((HistoryItem) mDataset.get(position)).getEntry().getSubtitle());
+        return i;
     }
 }

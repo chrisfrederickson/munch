@@ -16,6 +16,8 @@ public final class FeedReaderContract {
         public static final String COLUMN_NAME_ENTRY_ID = "ENTRYID";
         public static final String COLUMN_NAME_FOOD_ITEM = "ITEM";
         public static final String COLUMN_NAME_TIMESTAMP = "TIMESTAMP";
+        public static final String COLUMN_NAME_FOODURI = "FOODURI";
+        public static final String COLUMN_NAME_TAGLINE = "TAGLINE";
         public static final String COLUMN_NAME_CALORIES = "CALORIES";
         public static final String COLUMN_NAME_WATER = "WATER";
         public static final String COLUMN_NAME_PROTEIN = "PROTEIN";
@@ -56,6 +58,5 @@ public final class FeedReaderContract {
         public static final String COLUMN_NAME_MONOSATURATED_FAT = "MONOSATURATED_FAT";
         public static final String COLUMN_NAME_POLYSATURATED_FAT = "POLYSATURATED_FAT";
         public static final String COLUMN_NAME_CHOLESTEROL = "CHOLESTEROL";
-        public static final String COLUMN_NAME_FOODURI = "FOODURI";
     }
 }

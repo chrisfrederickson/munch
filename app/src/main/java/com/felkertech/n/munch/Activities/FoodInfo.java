@@ -147,12 +147,14 @@ public class FoodInfo extends ActionBarActivity {
     }
     public void goBack(View view) {
 //        NavUtils.navigateUpFromSameTask(this);
-        Intent i = NavUtils.getParentActivityIntent(this);
+        finish();
+//        return;
+        /*Intent i = NavUtils.getParentActivityIntent(this);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             ActivityOptions options = ActivityOptions.makeCustomAnimation(this, R.anim.enter_left, R.anim.do_nothing);
             startActivity(i, options.toBundle());
         } else
-            startActivity(i);
+            startActivity(i);*/
     }
     private void share() {
         //TODO Create share intent, pass some info along

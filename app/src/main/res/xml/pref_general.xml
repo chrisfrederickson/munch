@@ -20,54 +20,63 @@
         android:defaultValue="@string/no_sex"
         android:entries="@array/sex_values"
         android:entryValues="@array/sm_sex_values"/>
-    <PreferenceCategory
+    <com.jenzz.materialpreference.PreferenceCategory
         android:title="@string/dietary_restrictions">
-        <CheckBoxPreference
+        <com.jenzz.materialpreference.CheckBoxPreference
             android:key="@string/sm_nuts"
             android:title="@string/nuts"
             android:defaultValue="false"/>
-        <CheckBoxPreference
+        <com.jenzz.materialpreference.CheckBoxPreference
             android:key="@string/sm_dairy"
             android:title="@string/dairy"
             android:defaultValue="false"/>
-        <CheckBoxPreference
+        <com.jenzz.materialpreference.CheckBoxPreference
             android:key="@string/sm_vege"
             android:title="@string/vegetarian"
             android:defaultValue="false"/>
-        <CheckBoxPreference
+        <com.jenzz.materialpreference.CheckBoxPreference
             android:key="@string/sm_vegn"
             android:title="@string/vegan"
             android:defaultValue="false"/>
-        <CheckBoxPreference
+        <com.jenzz.materialpreference.CheckBoxPreference
             android:key="@string/sm_kosher"
             android:title="@string/kosher"
             android:defaultValue="false"/>
-        <CheckBoxPreference
+        <com.jenzz.materialpreference.CheckBoxPreference
             android:key="@string/sm_gluten"
             android:title="@string/gluten"
             android:defaultValue="false"/>
-    </PreferenceCategory>
-    <PreferenceCategory
+    </com.jenzz.materialpreference.PreferenceCategory>
+    <com.jenzz.materialpreference.PreferenceCategory
         android:title="@string/about">
-        <Preference
+        <com.jenzz.materialpreference.Preference
             android:key="@string/app_version"
             android:title="@string/version"
             android:selectable="false"/>
-        <Preference android:key="@string/developers"
+        <com.jenzz.materialpreference.Preference android:key="@string/developers"
             android:title="@string/created_by"
             android:selectable="false"
             android:summary="@string/persons"/>
         <!--<div>Icons made by <a href="http://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>-->
-        <Preference android:key="FoodIcons"
+        <com.jenzz.materialpreference.Preference
+            android:title="View on GitHub"
+            android:summary="The client application is open sourced on GitHub"
+            android:key="info">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/chrisfrederickson/munch"
+                />
+        </com.jenzz.materialpreference.Preference>
+        <com.jenzz.materialpreference.Preference android:key="FoodIcons"
             android:title="Iconography"
             android:selectable="false"
             android:summary="Food icons made by Freepik www.flaticon.com; is licensed by CC BY 3.0"/>
-        <Preference android:key="Photo"
+        <com.jenzz.materialpreference.Preference android:key="Photo"
             android:title="Photography"
             android:selectable="false"
             android:summary="Some photos taken from Wikimedia;\n
             \n'Steinbock1000943' by Gunnar Ries - Own work (own photo). Licensed under CC BY-SA 2.5 via Wikimedia Commons - http://commons.wikimedia.org/wiki/File:Steinbock1000943.JPG#/media/File:Steinbock1000943.JPG
             \n\n'Supreme pizza' by Scott Bauer - http://www.ars.usda.gov/is/graphics/photos/mar01/k7633-3.htm. Licensed under Public Domain via Wikimedia Commons - http://commons.wikimedia.org/wiki/File:Supreme_pizza.jpg#/media/File:Supreme_pizza.jpg
             "/>
-    </PreferenceCategory>
+    </com.jenzz.materialpreference.PreferenceCategory>
 </PreferenceScreen>

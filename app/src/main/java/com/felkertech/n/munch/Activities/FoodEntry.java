@@ -11,19 +11,33 @@ import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.CompletionInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.felkertech.n.munch.R;
+import com.felkertech.n.munch.Utils.API;
+import com.felkertech.n.munch.Utils.Constants;
 import com.felkertech.n.munch.Utils.FoodSuggestionsAdapter;
 import com.felkertech.n.munch.database.FeedReaderDbHelper;
 import com.felkertech.n.munch.database.FoodTableEntry;
+import com.koushikdutta.ion.Ion;
 import com.melnykov.fab.FloatingActionButton;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -45,6 +59,24 @@ public class FoodEntry extends ActionBarActivity {
         entry = (AutoCompleteTextView) findViewById(R.id.food_type);
         FoodSuggestionsAdapter adapter = new FoodSuggestionsAdapter(this, android.R.layout.simple_dropdown_item_1line);
         entry.setAdapter(adapter);
+
+        entry.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //TODO get photo
+                displayPhotoview();
+            }
+        });
 
         photo = (ImageView) findViewById(R.id.photo_taken);
 
@@ -75,20 +107,61 @@ public class FoodEntry extends ActionBarActivity {
             public void onClick(View v) {
                 //Get nutritional info from server
                 //Submit to database
-                FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getApplicationContext());
-                SQLiteDatabase rdb = mDbHelper.getReadableDatabase();
-                SQLiteDatabase wdb = mDbHelper.getWritableDatabase();
-                //TODO Populate data through researching it
-                mDbHelper.insert(wdb, new FoodTableEntry(mDbHelper.readAll(rdb).size(), new Date().getTime(), entry.getText().toString(), 700, 700, 700, 700, 700, getPhotoUri().toString()));
-                Log.d(TAG, "DB: " + mDbHelper.readAll(rdb).size() + "  " + mDbHelper.readAll(rdb).get(0).getFood());
-                displayPhotoview();
-                Handler mHandler = new Handler(Looper.getMainLooper()) {
+                final FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getApplicationContext());
+                final SQLiteDatabase rdb = mDbHelper.getReadableDatabase();
+                final SQLiteDatabase wdb = mDbHelper.getWritableDatabase();
+
+                int amount = Integer.parseInt(((TextView) findViewById(R.id.food_amount)).getText().toString());
+                String units = ((Spinner) findViewById(R.id.food_units)).getSelectedItem().toString();
+                if(units.equals("Cups")) {
+                    amount *= 227;
+                } else if(units.equals("Ounces")) {
+                    amount *= 30;
+                } else if(units.equals("Pounds")) {
+                    amount *= 450;
+                } else if(units.equals("Pints")) {
+                    amount *= 2*227;
+                } else if(units.equals("Gallons")) {
+                    amount *= 8*227;
+                } else if(units.equals("Liters")) {
+                    amount /= 1000;
+                }
+
+                //Populate data through researching it
+                final int finalAmount = amount;
+                new Thread(new Runnable() {
                     @Override
-                    public void handleMessage(Message inputMessage) {
-                        finish();
+                    public void run() {
+                        //Search - convert food name into an id no.
+                        //FIXME
+                        int id = Integer.parseInt("23326");
+                        String URL = API.info(id, finalAmount);
+                        HttpClient client = new DefaultHttpClient();
+                        HttpGet request = new HttpGet(URL);
+                        try {
+                            HttpResponse response = client.execute(request);
+                            String responseBody = EntityUtils.toString(response.getEntity());
+                            Log.d(TAG, URL);
+                            Log.d(TAG, responseBody);
+                            //Now parse
+                            FoodTableEntry fte = new FoodTableEntry(responseBody);
+                            photoUri = fte.getURI().toString();
+                            mDbHelper.insert(wdb, fte);
+                            Log.d(TAG, "DB: " + mDbHelper.readAll(rdb).size() + "  " + mDbHelper.readAll(rdb).get(0).getFood());
+
+                            Handler mHandler = new Handler(Looper.getMainLooper()) {
+                                @Override
+                                public void handleMessage(Message inputMessage) {
+                                    finish();
+                                }
+                            };
+                            mHandler.sendEmptyMessageDelayed(0, 1000);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getApplication(), "URL Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
-                };
-                mHandler.sendEmptyMessageDelayed(0, 300);
+                }).start();
                 //TODO Loader
                 Toast.makeText(getApplication(), "Adding data...", Toast.LENGTH_SHORT).show();
             }
@@ -156,10 +229,12 @@ public class FoodEntry extends ActionBarActivity {
             photo.setVisibility(View.INVISIBLE);
         } else if(!photoUri.isEmpty()) {
             photo.setVisibility(View.VISIBLE);
-            Log.d(TAG, "PhotoSet "+Uri.parse(photoUri).toString());
+            Log.d(TAG, "PhotoSet " + Uri.parse(photoUri).toString());
+            Ion.with(photo).load(Uri.parse(photoUri).toString());
             photo.setImageURI(Uri.parse(photoUri));
         } else if(!food.isEmpty()) {
             //Load via Ion
+
         }
     }
 
@@ -197,5 +272,8 @@ public class FoodEntry extends ActionBarActivity {
         //TODO Improve the file structure
         Log.d(TAG, "file:///"+Environment.getExternalStorageDirectory().getPath()+"/temporary_file.jpg");
         return Uri.parse("file:///"+Environment.getExternalStorageDirectory().getPath()+"/temporary_file.jpg");
+    }
+    public int getIdForFiltereedString(String food) {
+        for(String )
     }
 }

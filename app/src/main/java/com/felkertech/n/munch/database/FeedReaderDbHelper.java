@@ -31,6 +31,8 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                     FeedReaderContract.FeedEntry.COLUMN_NAME_ENTRY_ID + INT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM + TEXT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_TIMESTAMP + LONG_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI + TEXT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_TAGLINE + TEXT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES + FLOAT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_WATER + FLOAT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_PROTEIN + FLOAT_TYPE + COMMA_SEP +
@@ -70,9 +72,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                     FeedReaderContract.FeedEntry.COLUMN_NAME_SATURATED_FAT + FLOAT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_MONOSATURATED_FAT + FLOAT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_POLYSATURATED_FAT + FLOAT_TYPE + COMMA_SEP +
-                    FeedReaderContract.FeedEntry.COLUMN_NAME_CHOLESTEROL + FLOAT_TYPE + COMMA_SEP +
-                    FeedReaderContract.FeedEntry.COLUMN_NAME_SODIUM + FLOAT_TYPE + COMMA_SEP +
-                    FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI + TEXT_TYPE +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_CHOLESTEROL + FLOAT_TYPE +
                     " )";
 
     private static final String SQL_DELETE_ENTRIES =
@@ -108,6 +108,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_ENTRY_ID, fte.getId());
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM, fte.getFood());
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TIMESTAMP, fte.getTimestamp());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TAGLINE, fte.getTagline());
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES, fte.getCalories());
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_WATER, fte.getWater());
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_PROTEIN, fte.getProtein());
@@ -169,6 +170,8 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                 FeedReaderContract.FeedEntry.COLUMN_NAME_ENTRY_ID,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_TIMESTAMP,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_TAGLINE,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_PROTEIN,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_LIPID,
@@ -207,8 +210,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                 FeedReaderContract.FeedEntry.COLUMN_NAME_SATURATED_FAT,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_MONOSATURATED_FAT,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_POLYSATURATED_FAT,
-                FeedReaderContract.FeedEntry.COLUMN_NAME_CHOLESTEROL,
-                FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI
+                FeedReaderContract.FeedEntry.COLUMN_NAME_CHOLESTEROL
         };
 
 // How you want the results sorted in the resulting Cursor
@@ -236,6 +238,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                             c.getLong(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TIMESTAMP)),
                             c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM)),
                             c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI)),
+                            c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TAGLINE)),
                             c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES)),
                             c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_WATER)),
                             c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_PROTEIN)),

@@ -1,8 +1,14 @@
 package com.felkertech.n.munch.database;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.felkertech.n.munch.Objects.Food;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Date;
 
 /**
  * Created by N on 3/20/2015.
@@ -12,6 +18,7 @@ public class FoodTableEntry {
     private long timestamp;
 //    private Food food;
     private String food;
+    private String tagline;
     private float calories;
     private float water;
     private float protein;
@@ -55,6 +62,81 @@ public class FoodTableEntry {
 
     private Uri URI;
 
+    public static String TAG = "munch::FoodTableEntry";
+
+    /**
+     * Takes a response from the server and creates an entry from it
+     * @param responseBody
+     */
+    public FoodTableEntry(String responseBody) {
+        try {
+            JSONObject data = new JSONObject(responseBody);
+            this.timestamp = new Date().getTime();
+            this.food = data.getString("name");
+            this.calories = getFloat("calories", data);
+            this.water = getFloat("water", data);
+            this.protein = getFloat("protien", data);
+            this.lipid = getFloat("lipid", data);
+            this.carb = getFloat("carb", data);
+            this.fiber = getFloat("fiber", data);
+            this.sugar = getFloat("sugar", data);
+            this.calcium = getFloat("calcium", data);
+            this.iron = getFloat("iron", data);
+            this.magnesium = getFloat("magnesium", data);
+            this.phosphorus = getFloat("phosphorous", data);
+            this.potassium = getFloat("potassium", data);
+            this.sodium = getFloat("sodium", data);
+            this.zinc = getFloat("zinc", data);
+            this.copper = getFloat("copper", data);
+            this.manganese = getFloat("manganese", data);
+            this.selenium = getFloat("selenium", data);
+            this.vit_c = getFloat("vit_c", data);
+            this.thiamin = getFloat("thiamin", data);
+            this.riboflavin = getFloat("riboflavin", data);
+            this.niacin = getFloat("niacin", data);
+            this.phanto_acid = getFloat("phanto_acid", data);
+            this.vit_b6 = getFloat("vit_b6", data);
+            this.folate = getFloat("folate", data);
+            this.choline = getFloat("choline", data);
+            this.vit_b12 = getFloat("vit_b12", data);
+            this.vit_a = getFloat("vit_a", data);
+            this.retinol = getFloat("retinol", data);
+            this.alpha_carot = getFloat("alpha_carot", data);
+            this.beta_carot = getFloat("beta_carot", data);
+            this.beta_crypt = getFloat("beta_crypt", data);
+            this.lycophene = getFloat("lycophene", data);
+            this.lutein_zeaxanthin = getFloat("lutein_zeaxanthin", data);
+            this.vit_e = getFloat("vit_e", data);
+            this.vit_d = getFloat("vit_d", data);
+            this.vit_k = getFloat("vit_k", data);
+            this.saturated_fat = getFloat("saturated_fat", data);
+            this.monosaturated_fat = getFloat("monosaturated_fat", data);
+            this.polysaturated_fat = getFloat("polysaturated_fat", data);
+            this.cholesterol = getFloat("cholesterol", data);
+
+            Log.d(TAG, data.getString("img"));
+            this.URI = Uri.parse(data.getString("img"));
+            Log.d(TAG, URI.toString());
+            this.tagline = getSubtitle();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            this.id = -1;
+        }
+    }
+    private float getFloat(String title, JSONObject j) {
+        if(j.has(title)) {
+            try {
+                if(j.getString(title).equals("unknown"))
+                    return 0;
+                else
+                    return (float) j.getDouble(title);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0;
+    }
+
     public FoodTableEntry(int id, long timestamp, Food food) {
         this.id = id;
         this.timestamp = timestamp;
@@ -69,7 +151,7 @@ public class FoodTableEntry {
         this.sodium = 0;
         this.URI = null;
     }
-    public FoodTableEntry(int id, long timestamp, String food, String URI,
+    public FoodTableEntry(int id, long timestamp, String food, String URI, String tagline,
                           float calories, float water, float protein, float lipid, float carb, float fiber, float sugar, float calcium, float iron, float magnesium,
                           float phosphorus, float potassium, float sodium, float zinc, float copper, float manganese, float selenium, float vit_c, float thiamin,
                           float riboflavin, float niacin, float phanto_acid, float vit_b6, float folate, float choline, float vit_b12, float vit_a, float retinol,
@@ -77,6 +159,7 @@ public class FoodTableEntry {
                           float saturated_fat, float monosaturated_fat, float polysaturated_fat, float cholesterol) {
         this.id = id;
         this.timestamp = timestamp;
+        this.tagline = tagline;
         this.food = food;
         this.calories = calories;
         this.water = water;
@@ -354,5 +437,9 @@ public class FoodTableEntry {
 
     public float getCholesterol() {
         return cholesterol;
+    }
+
+    public String getTagline() {
+        return tagline;
     }
 }

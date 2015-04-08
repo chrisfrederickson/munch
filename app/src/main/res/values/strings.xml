@@ -59,6 +59,17 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+    <string name="pick_units">Units</string>
+    <string-array name="units">
+        <item>Grams</item>
+        <item>Milliliters</item>
+        <item>Liters</item>
+        <item>Ounces</item>
+        <item>Pounds</item>
+        <item>Cups</item>
+        <item>Pints</item>
+        <item>Gallons</item>
+    </string-array>
 
     <string name="sm_fitness">Active</string>
     <string name="app_version">APP_VERSION</string>
