@@ -1,6 +1,8 @@
 package com.felkertech.n.munch.Utils;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
@@ -42,6 +44,7 @@ public class FoodSuggestionsAdapter extends ArrayAdapter<String> {
             protected FilterResults performFiltering(final CharSequence constraint) {
                 final FilterResults results = new FilterResults();
                 if(constraint != null) {
+                    Log.d(TAG, "Start a new thread to repopulate the list of things");
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -65,7 +68,11 @@ public class FoodSuggestionsAdapter extends ArrayAdapter<String> {
                                 results.values = mData;
                                 results.count = mData.size();
                                 Log.d(TAG, results.count+" " +results.values.toString());
-                                notifyDataSetChanged();
+                                try {
+                                    notifyDataSetChanged();
+                                } catch(Exception e) {
+                                    e.printStackTrace();
+                                }
                             } catch (IOException e) {
                                 e.printStackTrace();
                             } catch (JSONException e) {
@@ -73,7 +80,6 @@ public class FoodSuggestionsAdapter extends ArrayAdapter<String> {
                             }
                         }
                     }).start();
-
                 }
                 return results;
             }

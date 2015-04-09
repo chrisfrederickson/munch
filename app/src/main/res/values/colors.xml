@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary">@color/green_500</color>
-    <color name="primary_dark">@color/green_500</color>
+    <color name="primary_dark">@color/green_900</color>
     <color name="primary_pressed">@color/green_900</color>
     <color name="ripple">#0f9</color>
     <color name="accent">@color/orange_500</color>

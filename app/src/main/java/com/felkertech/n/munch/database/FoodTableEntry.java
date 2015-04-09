@@ -114,7 +114,6 @@ public class FoodTableEntry {
             this.polysaturated_fat = getFloat("polysaturated_fat", data);
             this.cholesterol = getFloat("cholesterol", data);
 
-            Log.d(TAG, data.getString("img"));
             this.URI = Uri.parse(data.getString("img"));
             Log.d(TAG, URI.toString());
             this.tagline = getSubtitle();

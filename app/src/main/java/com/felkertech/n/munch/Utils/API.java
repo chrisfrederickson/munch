@@ -16,7 +16,7 @@ public abstract class API {
         return getApiBaseUrl() + "info/?id=" + id + "&amount=" + amount;
     }
     public static String suggestion(String entry) {
-        return getApiBaseUrl() + "suggestion/?entry=" + entry;
+        return getApiBaseUrl() + "suggestion/?entry=" + entry.replaceAll(" ","%20");
     }
     public static String recommend(boolean dr_nuts, boolean dr_dairy, boolean dr_veg, boolean dr_vegan, boolean dr_kosher, boolean dr_gluten, Hist hist) {
         return getApiBaseUrl() + "recommend/?dr_nuts="+dr_nuts+"&dr_dairy="+dr_dairy+"&dr_veg="+dr_veg+"&dr_vegan="+dr_vegan+"&dr_kosher"+dr_kosher+"&dr_gluten="+dr_gluten

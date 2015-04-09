@@ -32,6 +32,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.stetho.Stetho;
 import com.felkertech.n.munch.Activities.ApplicationSettings;
 import com.felkertech.n.munch.Activities.CameraPro;
 import com.felkertech.n.munch.Activities.FoodEntry;
@@ -82,6 +83,14 @@ public class Stream extends ActionBarActivity {
         initRecycler();
         initFAB();
         initDrawer();
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(
+                                Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(
+                                Stetho.defaultInspectorModulesProvider(this))
+                        .build());
+
 
         //Debugging notifications
 /*        Intent intent2 = new Intent(this, NotificationService.class);
@@ -158,11 +167,9 @@ public class Stream extends ActionBarActivity {
     public void handleDrawer(int position) {
         switch(position) {
             case 1: //History
-//                                Toast.makeText(getApplicationContext(), "History", Toast.LENGTH_SHORT).show();
                 refresh();
                 return;
             case 2: //Recommendations
-//                                Toast.makeText(getApplicationContext(), "Recommendations", Toast.LENGTH_SHORT).show();
                 refreshRecommendations();
                 return;
             //0 is a divider
@@ -171,14 +178,12 @@ public class Stream extends ActionBarActivity {
                 //Or use a function to display a layout
                 //Shows past weeks on a calendar -- color is darker for nutritious days
                 //Tap one will lead you to the history and scroll to that position
-//                                Toast.makeText(getApplicationContext(), "Calendar Heat Map", Toast.LENGTH_SHORT).show();
                 refreshCalendar();
                 return;
             case 4: //Gallery
                 //Load photos from directory and display them, will go to the foodinfo screen
                 //Populate with photolayout
                 //Do a refresh operation;
-//                                Toast.makeText(getApplicationContext(), "Gallery", Toast.LENGTH_SHORT).show();
                 refreshGallery();
                 return;
             case 6: //Settings
@@ -195,8 +200,8 @@ public class Stream extends ActionBarActivity {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "Resuming activity, go to drawer item " + mDrawerCurrentSelection);
-        handleDrawer(mDrawerCurrentSelection);
+        Log.d(TAG, "Resuming activity, go to drawer item " + (mDrawerCurrentSelection+1));
+        handleDrawer(mDrawerCurrentSelection+1);
     }
 
     public void x() {

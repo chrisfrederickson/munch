@@ -40,14 +40,17 @@ public abstract class AppManager {
             return R.drawable.apple55;
         if(name.contains("turkey") || name.contains("chicken"))
             return R.drawable.turkey7;
-        if(name.contains("tea"))
-            return R.drawable.tea24;
-        if(name.contains("cake") || name.contains("pie"))
-            return R.drawable.sweet9;
-        if(name.contains("sushi"))
-            return R.drawable.sushi3;
         if(name.contains("beef") || name.contains("steak") || name.contains("lamb"))
             return R.drawable.steak;
+        if(name.contains("tea")) {
+            return R.drawable.tea24;
+        }
+        if(name.contains("cake") || name.contains("pie")) {
+            return R.drawable.sweet9;
+        }
+        if(name.contains("sushi")) {
+            return R.drawable.sushi3;
+        }
         if(name.contains("coke") || name.contains("soda") || name.contains("coffee"))
             return R.drawable.soda7;
         if(name.contains("omlette") || name.contains("egg"))

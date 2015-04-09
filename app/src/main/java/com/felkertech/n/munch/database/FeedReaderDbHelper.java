@@ -26,7 +26,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
     private static final String FLOAT_TYPE = " REAL";
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_ENTRIES = /* IF NOT EXISTS */
-            "CREATE TABLE  IF NOT EXISTS " + FeedReaderContract.FeedEntry.TABLE_NAME + " (" +
+            "CREATE TABLE IF NOT EXISTS " + FeedReaderContract.FeedEntry.TABLE_NAME + " (" +
                     FeedReaderContract.FeedEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_ENTRY_ID + INT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM + TEXT_TYPE + COMMA_SEP +
@@ -88,6 +88,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //Make sure table is deleted first
 //        db.execSQL(SQL_DELETE_ENTRIES); //FIXME This may not be a good idea
+        Log.d(TAG, "Wave hi");
         db.execSQL(SQL_CREATE_ENTRIES);
         /*insert(new FoodTableEntry(0, new Date().getTime(), "Potato Chips"));
         insert(new FoodTableEntry(1, new Date().getTime(), "Chicken"));
@@ -154,12 +155,12 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         else
             values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI, fte.getURI().toString());
 
-// Insert the new row, returning the primary key value of the new row
-        long newRowId;
-        newRowId = db.insert(
+        // Insert the new row, returning the primary key value of the new row
+        long newRowId = db.insert(
                 FeedReaderContract.FeedEntry.TABLE_NAME,
                 null,
                 values);
+        Log.d(TAG, newRowId+" seems successful");
     }
     public ArrayList<FoodTableEntry> readAll(SQLiteDatabase db) {
         read = getReadableDatabase();
@@ -173,6 +174,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                 FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_TAGLINE,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_WATER,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_PROTEIN,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_LIPID,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_CARB,
@@ -220,12 +222,13 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         Cursor c = db.query(
                 FeedReaderContract.FeedEntry.TABLE_NAME,  // The table to query
                 projection,                               // The columns to return
-                FeedReaderContract.FeedEntry.COLUMN_NAME_ENTRY_ID+">?", // The columns for the WHERE clause
+                FeedReaderContract.FeedEntry._ID+">?", // The columns for the WHERE clause
                 new String[]{"0"},                            // The values for the WHERE clause
                 null,                                     // don't group the rows
                 null,                                     // don't filter by row groups
                 sortOrder                                 // The sort order
         );
+        Log.d(TAG, c.getCount()+" entries in readall");
         ArrayList<FoodTableEntry> entries = new ArrayList<>();
         if(c.getCount() == 0) {
             return entries;
@@ -234,7 +237,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         while(c.getPosition() < c.getCount()) {
             entries.add(
                     new FoodTableEntry(
-                            c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_ENTRY_ID)),
+                            c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)),
                             c.getLong(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TIMESTAMP)),
                             c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM)),
                             c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI)),
