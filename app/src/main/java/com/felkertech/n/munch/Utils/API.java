@@ -23,8 +23,8 @@ public abstract class API {
     }
     public static String recommend(boolean isMale, int age, boolean dr_nuts, boolean dr_dairy, boolean dr_veg, boolean dr_vegan, boolean dr_kosher, boolean dr_gluten, Hist hist) {
         return getApiBaseUrl() + "recommend/?dr_nuts="+dr_nuts+"&dr_dairy="+dr_dairy+"&dr_veg="+dr_veg+"&dr_vegan="+dr_vegan+"&dr_kosher="+dr_kosher+"&dr_gluten="+dr_gluten
-                +"&age="+age+"&gender="+isMale
-                +"&hist="+hist.toString();
+                +"&age="+age+"&gender="+isMale;
+/*                +"&hist="+hist.toString();*/
     }
     public static String recommend(Context ctx, Hist hist) {
         SettingsManager sm = new SettingsManager(ctx);

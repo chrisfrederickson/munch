@@ -69,6 +69,8 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -382,7 +384,8 @@ public class Stream extends ActionBarActivity {
             test.setTime(fte.getTimestamp());
             HistItem hi = new HistItem(fte.getId(), fte.getTimestamp(), fte.getAmount());
             Log.d(TAG, hi.toString());
-            if(todaytime - cutoff > test.getTime()) {
+            Log.d(TAG, todaytime+", "+cutoff+", "+test.getTime());
+            if(todaytime - test.getTime() < cutoff) {
                 h.insert(hi);
             }
         }
@@ -395,6 +398,8 @@ public class Stream extends ActionBarActivity {
                 String URL = API.recommend(getApplicationContext(), h);
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet(URL);
+                HttpParams p = new BasicHttpParams();
+                p.setParameter("hist", h.toString());
                 try {
                     HttpResponse response = client.execute(request);
                     final String responseBody = EntityUtils.toString(response.getEntity());
@@ -498,7 +503,7 @@ public class Stream extends ActionBarActivity {
             }
         }
         DateItem d = new DateItem(header);
-        items.add(new CalendarItem(d.convertDate(header), calories));
+        items.add(new CalendarItem("Before "+d.convertDate(header), calories));
         Log.d(TAG, "Passing "+items.size()+" items into Adapter");
         //Now pass it
         mAdapter = new HistoryAdapter(items, Stream.this);

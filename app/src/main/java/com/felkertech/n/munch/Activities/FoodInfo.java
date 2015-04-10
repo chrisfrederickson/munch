@@ -100,6 +100,15 @@ public class FoodInfo extends ActionBarActivity {
             if(i.hasExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_CARB)) {
                 ((TextView) findViewById(R.id.food_carbs)).setText(i.getFloatExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_CARB, 0)+"g");
             }
+            if(i.hasExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_SUGAR)) {
+                ((TextView) findViewById(R.id.food_sugar)).setText(i.getFloatExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_SUGAR, 0)+"g");
+            }
+            if(i.hasExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_WATER)) {
+                ((TextView) findViewById(R.id.food_water)).setText(i.getFloatExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_WATER, 0)+"g");
+            }
+            if(i.hasExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_FIBER)) {
+                ((TextView) findViewById(R.id.food_fiber)).setText(i.getFloatExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_FIBER, 0)+"g");
+            }
             if(i.hasExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI)) { //Will it work if value assigned but null?
                 photoUri = i.getStringExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI);
                 Log.d(TAG, "Has image");
@@ -133,7 +142,7 @@ public class FoodInfo extends ActionBarActivity {
                                                     titles = palette.getDarkVibrantSwatch();
                                                 if(titles == null)
                                                     titles = palette.getLightVibrantSwatch();
-                                                if(titles != null) {
+                                                if(titles != null && false) {
                                                     Log.d(TAG, "Set title color " + titles);
                                                     Log.d(TAG, "For " + findViewById(R.id.descriptor) + " palette " + titles);
                                                     ((TextView) findViewById(R.id.descriptor)).setTextColor(titles.getBodyTextColor());

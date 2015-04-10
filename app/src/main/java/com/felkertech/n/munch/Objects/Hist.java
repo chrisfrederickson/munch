@@ -15,6 +15,8 @@ public class Hist {
     }
     public void insert(HistItem hi) {
         history.add(hi);
+        Log.d(TAG, hi.toString());
+        Log.d(TAG, toString());
     }
     public String toString() {
         String out = "[";

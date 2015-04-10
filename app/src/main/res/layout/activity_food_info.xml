@@ -86,8 +86,7 @@
             android:id="@+id/nutrition"
             android:layout_width="240dp"
             android:layout_height="match_parent">
-            <TableRow android:paddingBottom="8dp"
-                android:layoutAnimation="@anim/layout_slip_up">
+            <TableRow android:paddingBottom="8dp">
                 <TextView android:layout_height="match_parent"
                     android:layout_width="150dp"
                     android:fontFamily="sans-serif-condensed"
@@ -101,13 +100,12 @@
                     android:layout_gravity="end"
                     android:text="150"/>
             </TableRow>
-            <TableRow android:paddingBottom="8dp"
-                android:layoutAnimation="@anim/layout_slip_up">
+            <TableRow android:paddingBottom="8dp">
                 <TextView android:layout_height="match_parent"
                     android:layout_width="150dp"
                     android:fontFamily="sans-serif-condensed"
                     android:textSize="14sp"
-                    android:text="Total Fat"/>
+                    android:text="Fat"/>
                 <TextView android:layout_height="match_parent"
                     android:layout_width="90dp"
                     android:id="@+id/food_fat"
@@ -116,8 +114,7 @@
                     android:layout_gravity="end"
                     android:text="10g"/>
             </TableRow>
-            <TableRow android:paddingBottom="8dp"
-                android:layoutAnimation="@anim/layout_slip_up">
+            <TableRow android:paddingBottom="8dp">
                 <TextView android:layout_height="match_parent"
                     android:layout_width="150dp"
                     android:fontFamily="sans-serif-condensed"
@@ -131,13 +128,12 @@
                     android:layout_gravity="end"
                     android:text="10g"/>
             </TableRow>
-            <TableRow android:paddingBottom="8dp"
-                android:layoutAnimation="@anim/layout_slip_up">
+            <TableRow android:paddingBottom="8dp">
                 <TextView android:layout_height="match_parent"
                     android:layout_width="150dp"
                     android:fontFamily="sans-serif-condensed"
                     android:textSize="14sp"
-                    android:text="Total Carbohydrates"/>
+                    android:text="Carbohydrates"/>
                 <TextView android:layout_height="match_parent"
                     android:layout_width="90dp"
                     android:id="@+id/food_carbs"
@@ -146,8 +142,7 @@
                     android:layout_gravity="end"
                     android:text="10g"/>
             </TableRow>
-            <TableRow android:paddingBottom="8dp"
-                android:layoutAnimation="@anim/layout_slip_up">
+            <TableRow android:paddingBottom="8dp">
                 <TextView android:layout_height="match_parent"
                     android:layout_width="150dp"
                     android:fontFamily="sans-serif-condensed"
@@ -161,16 +156,43 @@
                     android:layout_gravity="end"
                     android:text="10mg"/>
             </TableRow>
-            <TableRow android:paddingBottom="8dp"
-                android:layoutAnimation="@anim/layout_slip_up">
+            <TableRow android:paddingBottom="8dp">
                 <TextView android:layout_height="match_parent"
                     android:layout_width="150dp"
                     android:fontFamily="sans-serif-condensed"
                     android:textSize="14sp"
-                    android:text="Sodium"/>
+                    android:text="Sugar"/>
                 <TextView android:layout_height="match_parent"
                     android:layout_width="90dp"
-                    android:id="@+id/food_sodium"
+                    android:id="@+id/food_sugar"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="14sp"
+                    android:layout_gravity="end"
+                    android:text="10mg"/>
+            </TableRow>
+            <TableRow android:paddingBottom="8dp">
+                <TextView android:layout_height="match_parent"
+                    android:layout_width="150dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="14sp"
+                    android:text="Water"/>
+                <TextView android:layout_height="match_parent"
+                    android:layout_width="90dp"
+                    android:id="@+id/food_water"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="14sp"
+                    android:layout_gravity="end"
+                    android:text="10mg"/>
+            </TableRow>
+            <TableRow android:paddingBottom="8dp">
+                <TextView android:layout_height="match_parent"
+                    android:layout_width="150dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="14sp"
+                    android:text="Fiber"/>
+                <TextView android:layout_height="match_parent"
+                    android:layout_width="90dp"
+                    android:id="@+id/food_fiber"
                     android:fontFamily="sans-serif-condensed"
                     android:textSize="14sp"
                     android:layout_gravity="end"
