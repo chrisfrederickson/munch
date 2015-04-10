@@ -19,6 +19,7 @@ public class FoodTableEntry {
 //    private Food food;
     private String food;
     private String tagline;
+    private int amount;
     private float calories;
     private float water;
     private float protein;
@@ -71,6 +72,7 @@ public class FoodTableEntry {
     public FoodTableEntry(String responseBody) {
         try {
             JSONObject data = new JSONObject(responseBody);
+            this.id = data.getInt("id");
             this.timestamp = new Date().getTime();
             this.food = data.getString("name");
             this.calories = getFloat("calories", data);
@@ -150,7 +152,7 @@ public class FoodTableEntry {
         this.sodium = 0;
         this.URI = null;
     }
-    public FoodTableEntry(int id, long timestamp, String food, String URI, String tagline,
+    public FoodTableEntry(int id, long timestamp, String food, String URI, String tagline, int amount,
                           float calories, float water, float protein, float lipid, float carb, float fiber, float sugar, float calcium, float iron, float magnesium,
                           float phosphorus, float potassium, float sodium, float zinc, float copper, float manganese, float selenium, float vit_c, float thiamin,
                           float riboflavin, float niacin, float phanto_acid, float vit_b6, float folate, float choline, float vit_b12, float vit_a, float retinol,
@@ -160,6 +162,7 @@ public class FoodTableEntry {
         this.timestamp = timestamp;
         this.tagline = tagline;
         this.food = food;
+        this.amount = amount;
         this.calories = calories;
         this.water = water;
         this.protein = protein;
@@ -440,5 +443,9 @@ public class FoodTableEntry {
 
     public String getTagline() {
         return tagline;
+    }
+
+    public int getAmount() {
+        return amount;
     }
 }

@@ -1,5 +1,7 @@
 package com.felkertech.n.munch.Objects;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -7,6 +9,7 @@ import java.util.ArrayList;
  */
 public class Hist {
     ArrayList<HistItem> history;
+    public static String TAG = "munch::Hist";
     public Hist() {
         history = new ArrayList<>();
     }
@@ -17,20 +20,8 @@ public class Hist {
         String out = "[";
         for(HistItem hi: history) {
             out += hi.toString();
+            Log.d(TAG, "Add to hist: "+hi.toString());
         }
         return out+"]";
-    }
-    public class HistItem {
-        private int id;
-        private long time;
-        private int amount;
-        public HistItem(int id, long time, int amount) {
-            this.id = id;
-            this.time = time;
-            this.amount = amount;
-        }
-        public String toString() {
-            return "{\"id:\""+id+", \"time\": "+time+", \"amount\": "+amount+"}";
-        }
     }
 }

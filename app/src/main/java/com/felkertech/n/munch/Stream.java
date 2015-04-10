@@ -11,6 +11,9 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.os.UserManager;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
@@ -39,10 +42,13 @@ import com.felkertech.n.munch.Activities.FoodEntry;
 import com.felkertech.n.munch.Objects.AdviceCard;
 import com.felkertech.n.munch.Objects.CalendarItem;
 import com.felkertech.n.munch.Objects.DateItem;
+import com.felkertech.n.munch.Objects.Hist;
+import com.felkertech.n.munch.Objects.HistItem;
 import com.felkertech.n.munch.Objects.HistoryItem;
 import com.felkertech.n.munch.Objects.StreamItem;
 import com.felkertech.n.munch.Objects.StreamPhoto;
 import com.felkertech.n.munch.Photography.FroyoAlbumDirFactory;
+import com.felkertech.n.munch.Utils.API;
 import com.felkertech.n.munch.Utils.AppManager;
 import com.felkertech.n.munch.database.FeedReaderDbHelper;
 import com.felkertech.n.munch.database.FoodTableEntry;
@@ -57,6 +63,16 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -198,8 +214,8 @@ public class Stream extends ActionBarActivity {
         }
     }
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         Log.d(TAG, "Resuming activity, go to drawer item " + (mDrawerCurrentSelection+1));
         handleDrawer(mDrawerCurrentSelection+1);
     }
@@ -346,14 +362,82 @@ public class Stream extends ActionBarActivity {
         mAdapter.hideAll();
         mToolbar.setTitle("Recommendations");
         //Generate some cards, adapt based on time of day
-        int hour = new Date().getHours();
-        ArrayList<StreamItem> items = new ArrayList<StreamItem>();
+        final int hour = new Date().getHours();
+        final ArrayList<StreamItem> items = new ArrayList<StreamItem>();
+
+        //Create history
+        final FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getApplicationContext());
+        final SQLiteDatabase rdb = mDbHelper.getReadableDatabase();
+        final SQLiteDatabase wdb = mDbHelper.getWritableDatabase();
+        mDbHelper.onCreate(wdb);
+        ArrayList<FoodTableEntry> entries = mDbHelper.readAll(rdb);
+        Iterator<FoodTableEntry> i = entries.iterator();
+        Date header = new Date();
+        long todaytime = header.getTime();
+        long cutoff = 1000*60*60*24*3; //3 Days
+        final Hist h = new Hist();
+        while(i.hasNext()) {
+            FoodTableEntry fte = i.next();
+            Date test = new Date();
+            test.setTime(fte.getTimestamp());
+            HistItem hi = new HistItem(fte.getId(), fte.getTimestamp(), fte.getAmount());
+            Log.d(TAG, hi.toString());
+            if(todaytime - cutoff > test.getTime()) {
+                h.insert(hi);
+            }
+        }
+        Log.d(TAG, "H: "+h.toString());
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, h.toString());
+                String URL = API.recommend(getApplicationContext(), h);
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet(URL);
+                try {
+                    HttpResponse response = client.execute(request);
+                    final String responseBody = EntityUtils.toString(response.getEntity());
+                    Log.d(TAG, URL);
+                    Log.d(TAG, responseBody);
+                    Handler mHandler = new Handler(Looper.getMainLooper()) {
+                        @Override
+                        public void handleMessage(Message inputMessage) {
+                            try {
+                                JSONArray ja = new JSONArray(responseBody);
+                                for (int i = 0; i < ja.length(); i++) {
+                                    JSONObject j = ja.getJSONObject(i);
+                                    String d = j.getString("desc");
+                                    int id = j.getInt("id");
+                                    String img = j.getString("img");
+                                    String name = j.getString("name");
+                                    items.add(new AdviceCard(name, d, img, -1));
+                                }
+                                Log.d(TAG, "Passing "+items.size()+" items into Adapter");
+                                //Now pass it
+                                mAdapter = new HistoryAdapter(items, Stream.this);
+                                mRecycler.setAdapter(mAdapter);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    mHandler.sendEmptyMessageDelayed(0, 2);
+                } catch (ClientProtocolException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
         if(AppManager.isUserAGoat(this))
             items.add(new AdviceCard("Salt Deposits", "Do you have a craving for any minerals?", "", R.drawable.goat));
 
+
+
         //TODO FIGURE OUT WAYS TO GENERATE CONTENT
-        if(hour > 5 && hour < 11) {
+        /*if(hour > 5 && hour < 11) {
             //BREAKFAST
             items.add(new AdviceCard("Eggs",
                     "Eggs are a great way to get energy in the morning",
@@ -377,7 +461,7 @@ public class Stream extends ActionBarActivity {
                     "Late night meals mess up your metabolism",
                     "Studies show that eating late at night affect your ability to sleep and perform the next day",
                     R.drawable.ic_launcher));
-        }
+        }*/
 
         Log.d(TAG, "Passing "+items.size()+" items into Adapter");
         //Now pass it
@@ -391,7 +475,7 @@ public class Stream extends ActionBarActivity {
         FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(getApplicationContext());
         SQLiteDatabase rdb = mDbHelper.getReadableDatabase();
         SQLiteDatabase wdb = mDbHelper.getWritableDatabase();
-        //FIXME Should not create database all the time as it resets
+
         mDbHelper.onCreate(wdb);
         ArrayList<FoodTableEntry> entries = mDbHelper.readAll(rdb);
         Iterator<FoodTableEntry> i = entries.iterator();
@@ -413,6 +497,8 @@ public class Stream extends ActionBarActivity {
                 calories = 0;
             }
         }
+        DateItem d = new DateItem(header);
+        items.add(new CalendarItem(d.convertDate(header), calories));
         Log.d(TAG, "Passing "+items.size()+" items into Adapter");
         //Now pass it
         mAdapter = new HistoryAdapter(items, Stream.this);

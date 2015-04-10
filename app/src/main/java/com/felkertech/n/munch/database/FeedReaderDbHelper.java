@@ -32,6 +32,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                     FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM + TEXT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_TIMESTAMP + LONG_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI + TEXT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT + INT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_TAGLINE + TEXT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES + FLOAT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_WATER + FLOAT_TYPE + COMMA_SEP +
@@ -109,6 +110,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_ENTRY_ID, fte.getId());
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM, fte.getFood());
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TIMESTAMP, fte.getTimestamp());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT, fte.getAmount());
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TAGLINE, fte.getTagline());
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES, fte.getCalories());
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_WATER, fte.getWater());
@@ -170,6 +172,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                 FeedReaderContract.FeedEntry._ID,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_ENTRY_ID,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_TIMESTAMP,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_TAGLINE,
@@ -242,6 +245,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                             c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM)),
                             c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI)),
                             c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TAGLINE)),
+                            c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT)),
                             c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES)),
                             c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_WATER)),
                             c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_PROTEIN)),

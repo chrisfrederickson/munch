@@ -161,6 +161,21 @@
                     android:layout_gravity="end"
                     android:text="10mg"/>
             </TableRow>
+            <TableRow android:paddingBottom="8dp"
+                android:layoutAnimation="@anim/layout_slip_up">
+                <TextView android:layout_height="match_parent"
+                    android:layout_width="150dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="14sp"
+                    android:text="Sodium"/>
+                <TextView android:layout_height="match_parent"
+                    android:layout_width="90dp"
+                    android:id="@+id/food_sodium"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="14sp"
+                    android:layout_gravity="end"
+                    android:text="10mg"/>
+            </TableRow>
         </TableLayout>
     </LinearLayout>
 </LinearLayout>

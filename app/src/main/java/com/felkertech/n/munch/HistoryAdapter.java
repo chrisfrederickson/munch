@@ -127,7 +127,13 @@ public class HistoryAdapter extends RecyclerView.Adapter {
 //        }
         switch(mDataset.get(position).getItemClass()) {
             case StreamTypes.TYPE_ADVICE:
-                ((ImageView) holder.itemView.findViewById(R.id.hero)).setImageResource(mDataset.get(position).getRelevantImage());
+                Log.d(TAG, "Adding recommendations: "+mDataset.get(position).getRelevantImage()+" or "+mDataset.get(position).getTertiaryTitle());
+                if(mDataset.get(position).getRelevantImage() == -1) {
+                    Ion.with(((ImageView) holder.itemView.findViewById(R.id.hero)))
+                            .load(mDataset.get(position).getTertiaryTitle());
+                } else {
+                    ((ImageView) holder.itemView.findViewById(R.id.hero)).setImageResource(mDataset.get(position).getRelevantImage());
+                }
                 ((TextView) holder.itemView.findViewById(R.id.title)).setText(mDataset.get(position).getTitle());
                 ((TextView) holder.itemView.findViewById(R.id.descriptor)).setText(mDataset.get(position).getSecondaryTitle());
                 holder.itemView.findViewById(R.id.button_dismiss).setOnClickListener(new View.OnClickListener() {
@@ -150,6 +156,12 @@ public class HistoryAdapter extends RecyclerView.Adapter {
                     public void onClick(View v) {
                         Intent i = new Intent(mContext, FoodInfo.class);
                         i.putExtra("FOOD_TYPE", ((TextView) holder.itemView.findViewById(R.id.title)).getText());
+                        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_TAGLINE, mDataset.get(position).getSecondaryTitle());
+                        if(mDataset.get(position).getRelevantImage() == -1) {
+                            i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI, mDataset.get(position).getTertiaryTitle());
+                        } else {
+//                            i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI, mDataset.get(position).getRelevantImage());
+                        }
                         /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { //Smexy activity transition
                             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext,
                                     Pair.create(holder.itemView.findViewById(R.id.food_icon), "food_icon"),
@@ -193,6 +205,29 @@ public class HistoryAdapter extends RecyclerView.Adapter {
                         Intent i = new Intent(mContext, FoodInfo.class);
                         i = pushFood(i, holder, position);
                         Log.d(TAG, i.getStringExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM));
+                        Log.d(TAG, i.getFloatExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES, 0) + "calories");
+
+                        /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { //Smexy activity transition
+                            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext,
+                                    Pair.create(holder.itemView.findViewById(R.id.food_icon), "food_icon"),
+                                    Pair.create(holder.itemView.findViewById(R.id.title), "food_name"));
+                            options.makeCustomAnimation(mContext, R.anim.enter_left, R.anim.do_nothing);
+                            mContext.startActivity(i, options.toBundle());
+                        } else */if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            ActivityOptions options = ActivityOptions.makeCustomAnimation(mContext, R.anim.enter_left, R.anim.do_nothing);
+                            mContext.startActivity(i, options.toBundle());
+                        } else
+                            mContext.startActivity(i);
+                    }
+                });
+                holder.itemView.findViewById(R.id.arrow).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Open up data activity
+                        Intent i = new Intent(mContext, FoodInfo.class);
+                        i = pushFood(i, holder, position);
+                        Log.d(TAG, i.getStringExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM));
+                        Log.d(TAG, i.getFloatExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES, 0) + "calories");
 
                         /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { //Smexy activity transition
                             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext,
@@ -418,7 +453,7 @@ public class HistoryAdapter extends RecyclerView.Adapter {
         i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_C, ((StreamPhoto)mDataset.get(position)).getEntry().getVit_c());
         i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_THIAMIN, ((StreamPhoto)mDataset.get(position)).getEntry().getThiamin());
         i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_RIBOFLAVIN, ((StreamPhoto)mDataset.get(position)).getEntry().getRiboflavin());
-        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_NIACIN, ((StreamPhoto)mDataset.get(position)).getEntry().getNiacin());
+        i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_NIACIN, ((StreamPhoto) mDataset.get(position)).getEntry().getNiacin());
         i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_PHANTO_ACID, ((StreamPhoto)mDataset.get(position)).getEntry().getPhanto_acid());
         i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_VIT_B6, ((StreamPhoto)mDataset.get(position)).getEntry().getVit_b6());
         i.putExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_FOLATE, ((StreamPhoto)mDataset.get(position)).getEntry().getFolate());
