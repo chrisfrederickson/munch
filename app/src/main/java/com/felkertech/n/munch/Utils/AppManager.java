@@ -33,6 +33,8 @@ public abstract class AppManager {
         return app_installed;
     }
     public static int getAppropriateIcon(String name) {
+        if(name == null)
+            name = "";
         name = name.toLowerCase();
         if(name.contains("pineapple"))
             return R.drawable.pineapple;

@@ -51,12 +51,19 @@ public class FoodInfo extends ActionBarActivity {
 //        ((Toolbar) findViewById(R.id.my_awesome_toolbar)).setAlpha(0);
 //        mToolbar.setBackgroundColor(getResources().getColor(R.color.pink_500));
 //        mToolbar.getBackground().setAlpha(0);
+
+
         Intent i = getIntent();
         if(!(i == null)) {
             //Receive food, look up its details, then modify
             if(i.hasExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM)) {
                 mFood = i.getStringExtra(FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM);
                 ((TextView) findViewById(R.id.title)).setText(mFood);
+                Drawable mDrawable = getResources().getDrawable(AppManager.getAppropriateIcon(mFood));
+                int color2 = Color.parseColor("#FFFFFF");
+                PorterDuff.Mode mMode = PorterDuff.Mode.SRC_ATOP;
+                mDrawable.setColorFilter(color2, mMode);
+                ((ImageView) findViewById(R.id.food_icon)).setImageDrawable(mDrawable);
 
             } if(i.hasExtra("FOOD_TYPE")) { //For things like 'Green Vegetables'
                 mFood = i.getStringExtra("FOOD_TYPE");
@@ -82,6 +89,9 @@ public class FoodInfo extends ActionBarActivity {
                 findViewById(R.id.descriptor).setBackgroundColor(getResources().getColor(android.R.color.white));
                 findViewById(R.id.nutrition).setVisibility(View.GONE);
                 findViewById(R.id.food_icon).setVisibility(View.GONE);
+            }
+            if(i.hasExtra("FOOD_PHOTO")) {
+                photoUri = i.getStringExtra("FOOD_PHOTO");
             }
 
             //Do stuff if you receive food info with intent

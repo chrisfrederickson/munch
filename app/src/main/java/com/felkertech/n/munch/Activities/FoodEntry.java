@@ -48,8 +48,8 @@ public class FoodEntry extends ActionBarActivity {
     private AutoCompleteTextView entry;
     private FloatingActionButton fab;
     private ImageView photo;
-    private String photoUri;
-    private String photoUrl;
+    private String photoUri = new String();
+    private String photoUrl = new String();
     private static String TAG = "munch::FoodEntry";
     FoodSuggestionsAdapter adapter;
     private SuggestionsReceiver receiver;
@@ -78,7 +78,8 @@ public class FoodEntry extends ActionBarActivity {
 
             @Override
             public void afterTextChanged(final Editable s) {
-                new Thread(new SuggestionsReceiver(self, s.toString())).start();
+                if(photoUri.isEmpty())
+                    new Thread(new SuggestionsReceiver(self, s.toString())).start();
 
             }
         });
@@ -159,6 +160,9 @@ public class FoodEntry extends ActionBarActivity {
                             //Now parse
                             FoodTableEntry fte = new FoodTableEntry(responseBody);
                             photoUrl = fte.getURI().toString();
+                            if(!photoUri.isEmpty())
+                                fte.setURI(Uri.parse(photoUri));
+                            Log.d(TAG, "INSERTING PHOTO "+fte.getURI().toString());
                             mDbHelper.insert(wdb, fte);
 //                            Log.d(TAG, "DB: " + mDbHelper.readAll(rdb).size() + "  " + mDbHelper.readAll(rdb).get(0).getFood());
 

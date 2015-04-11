@@ -36,7 +36,10 @@ public class FoodSuggestionsAdapter extends ArrayAdapter<String> {
         return mData.size();
     }
     public String getItem(int index) {
-        return mData.get(index);
+        if(index < mData.size())
+            return mData.get(index);
+        else
+            return "";
     }
     public Filter getFilter() {
         Log.d(TAG, "getFilter()");
