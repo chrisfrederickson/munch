@@ -11,9 +11,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -35,7 +34,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class FoodInfo extends ActionBarActivity {
+public class FoodInfo extends AppCompatActivity {
     private String mFood;
     private Toolbar mToolbar;
     private String photoUri = "";

@@ -16,7 +16,7 @@ import java.util.Date;
  */
 public class FeedReaderDbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "Munch.db";
     public static final String TAG = "munch::dbHelper";
 
@@ -32,7 +32,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                     FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM + TEXT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_TIMESTAMP + LONG_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI + TEXT_TYPE + COMMA_SEP +
-                    FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT + INT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT + FLOAT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_TAGLINE + TEXT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES + FLOAT_TYPE + COMMA_SEP +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_WATER + FLOAT_TYPE + COMMA_SEP +
@@ -245,7 +245,7 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                             c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FOOD_ITEM)),
                             c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FOODURI)),
                             c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TAGLINE)),
-                            c.getInt(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT)),
+                            c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT)),
                             c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CALORIES)),
                             c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_WATER)),
                             c.getFloat(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_PROTEIN)),

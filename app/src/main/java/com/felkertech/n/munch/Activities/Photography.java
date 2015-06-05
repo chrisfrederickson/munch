@@ -2,12 +2,13 @@ package com.felkertech.n.munch.Activities;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.felkertech.n.munch.R;
 
-public class Photography extends ActionBarActivity {
+public class Photography extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

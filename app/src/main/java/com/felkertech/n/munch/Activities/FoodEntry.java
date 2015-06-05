@@ -9,8 +9,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -44,7 +44,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class FoodEntry extends ActionBarActivity {
+public class FoodEntry extends AppCompatActivity {
     private AutoCompleteTextView entry;
     private FloatingActionButton fab;
     private ImageView photo;
@@ -124,7 +124,10 @@ public class FoodEntry extends ActionBarActivity {
                 final SQLiteDatabase rdb = mDbHelper.getReadableDatabase();
                 final SQLiteDatabase wdb = mDbHelper.getWritableDatabase();
 
-                int amount = Integer.parseInt(((TextView) findViewById(R.id.food_amount)).getText().toString());
+                float amount = 0;
+                String amountString = ((TextView) findViewById(R.id.food_amount)).getText().toString();
+                if(!amountString.isEmpty())
+                    amount = Float.parseFloat(amountString);
                 String units = ((Spinner) findViewById(R.id.food_units)).getSelectedItem().toString();
                 if(units.equals("Cups")) {
                     amount *= 227;
@@ -141,7 +144,7 @@ public class FoodEntry extends ActionBarActivity {
                 }
 
                 //Populate data through researching it
-                final int finalAmount = amount;
+                final float finalAmount = amount;
                 new Thread(new Runnable() {
                     @Override
                     public void run() {

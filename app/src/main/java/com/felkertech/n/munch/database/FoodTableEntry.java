@@ -19,7 +19,7 @@ public class FoodTableEntry {
 //    private Food food;
     private String food;
     private String tagline;
-    private int amount;
+    private float amount;
     private float calories;
     private float water;
     private float protein;
@@ -152,7 +152,7 @@ public class FoodTableEntry {
         this.sodium = 0;
         this.URI = null;
     }
-    public FoodTableEntry(int id, long timestamp, String food, String URI, String tagline, int amount,
+    public FoodTableEntry(int id, long timestamp, String food, String URI, String tagline, float amount,
                           float calories, float water, float protein, float lipid, float carb, float fiber, float sugar, float calcium, float iron, float magnesium,
                           float phosphorus, float potassium, float sodium, float zinc, float copper, float manganese, float selenium, float vit_c, float thiamin,
                           float riboflavin, float niacin, float phanto_acid, float vit_b6, float folate, float choline, float vit_b12, float vit_a, float retinol,
@@ -445,7 +445,7 @@ public class FoodTableEntry {
         return tagline;
     }
 
-    public int getAmount() {
+    public float getAmount() {
         return amount;
     }
 }

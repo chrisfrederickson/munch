@@ -1,30 +1,23 @@
 package com.felkertech.n.munch.Activities;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.PackageInfo;
-import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 
 import com.felkertech.n.munch.R;
-
-import java.util.List;
 
 /**
  * A {@link android.preference.PreferenceActivity} that presents a set of application settings. On
@@ -37,7 +30,7 @@ import java.util.List;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class ApplicationSettings extends ActionBarActivity {
+public class ApplicationSettings extends AppCompatActivity {
     /**
      * Determines whether to always show the simplified settings UI, where
      * settings are presented in a single list. When false, settings are shown
@@ -46,7 +39,7 @@ public class ApplicationSettings extends ActionBarActivity {
      */
     private static final boolean ALWAYS_SIMPLE_PREFS = true;
     public static final String TAG = "munch::ApplictnSettings";
-    public Context mContext = this;
+    public Context mContext = getApplicationContext();
 //    private static SharedPreferences sharedPreferences;
 
 
