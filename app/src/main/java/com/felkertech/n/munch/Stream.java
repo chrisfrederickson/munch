@@ -56,7 +56,9 @@ import com.felkertech.n.munch.services.AlarmReceiver;
 import com.felkertech.n.munch.services.NotificationService;
 import com.melnykov.fab.FloatingActionButton;
 import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
+import com.mikepenz.materialdrawer.accountswitcher.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
@@ -146,24 +148,16 @@ public class Stream extends ActionBarActivity {
         fab.attachToRecyclerView(mRecycler);
     }
     public void initDrawer() {
-        AccountHeader.Result headerResult = new AccountHeader()
+        AccountHeader ahb = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.banner_supreme_pizza)
-                .addProfiles(
-                        /*new ProfileDrawerItem().withName("Me").withEmail("").withIcon(getResources().getDrawable(R.drawable.ic_launcher))*/
-                )
-                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-                    @Override
-                    public void onProfileChanged(View view, IProfile profile) {
-                    }
-                })
                 .build();
 
-        Drawer.Result result = new Drawer()
+        Drawer result = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(mToolbar)
                 .withTranslucentStatusBar(true)
-                .withAccountHeader(headerResult)
+                .withAccountHeader(ahb)
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName("History").withIcon(R.drawable.ic_book_grey600_24dp),
                         new PrimaryDrawerItem().withName("Recommendations").withIcon(R.drawable.ic_inbox_grey600_24dp),
@@ -174,9 +168,10 @@ public class Stream extends ActionBarActivity {
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id, IDrawerItem drawerItem) {
+                    public boolean onItemClick(AdapterView<?> parent, View view, int position, long id, IDrawerItem drawerItem) {
                         // do something with the clicked item :D
                         handleDrawer(position);
+                        return false;
                     }
                 })
                 .withSelectedItem(0)
